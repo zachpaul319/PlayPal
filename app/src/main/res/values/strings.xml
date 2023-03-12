@@ -1,0 +1,6 @@
+<resources>
+    <string name="app_name">PlayPalApp</string>
+    <string name="login_btn">Login</string>
+    <string name="sign_up_btn">Sign Up</string>
+    <string name="lets_go_btn">Let\'s Go!</string>
+</resources>
