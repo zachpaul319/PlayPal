@@ -39,16 +39,61 @@
         <TextView
             android:id="@+id/currentProduction"
             android:layout_width="356dp"
-            android:layout_height="68dp"
+            android:layout_height="89dp"
             android:layout_marginTop="44dp"
             android:background="@drawable/textview_border"
             android:text="TextView"
             android:textAlignment="center"
-            android:textColor="@color/white"
+            android:textColor="@color/purple_700"
             android:textSize="24sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/imageView2" />
+
+        <TextView
+            android:id="@+id/pastProductions"
+            android:layout_width="176dp"
+            android:layout_height="129dp"
+            android:layout_marginTop="48dp"
+            android:text="TextView"
+            android:textAlignment="center"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.509"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/currentProduction" />
+
+        <Button
+            android:id="@+id/scriptButton"
+            android:layout_width="130dp"
+            android:layout_height="70dp"
+            android:layout_marginStart="52dp"
+            android:layout_marginTop="96dp"
+            android:layout_marginEnd="47dp"
+            android:background="@color/teal_700"
+            android:text="@string/script_btn"
+            android:textColor="@android:color/white"
+            android:textSize="19sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toStartOf="@+id/messagesButton"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/pastProductions" />
+
+        <Button
+            android:id="@+id/messagesButton"
+            android:layout_width="130dp"
+            android:layout_height="70dp"
+            android:layout_marginTop="96dp"
+            android:layout_marginEnd="52dp"
+            android:background="@color/purple_500"
+            android:text="@string/messages_btn"
+            android:textColor="@color/white"
+            android:textSize="19sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/pastProductions" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </FrameLayout>

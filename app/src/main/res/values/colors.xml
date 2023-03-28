@@ -9,5 +9,6 @@
     <color name="white">#FFFFFFFF</color>
     <color name="yellow">#FEDC00</color>
     <color name="orange">#FEBD00</color>
+    <color name="darker_orange">#FE8E00</color>
     <color name="red">#FF0000</color>
 </resources>
