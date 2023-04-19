@@ -1,5 +1,7 @@
 package com.example.playpalapp;
 
+import static com.example.playpalapp.FieldChecker.*;
+
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -8,6 +10,20 @@ import androidx.navigation.Navigation;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
+import android.widget.Toast;
+
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.example.playpalapp.model.AuthRequest;
+import com.example.playpalapp.model.User;
+import com.example.playpalapp.model.UserModel;
+import com.google.gson.Gson;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -15,6 +31,7 @@ import android.view.ViewGroup;
  * create an instance of this fragment.
  */
 public class LoginFragment extends Fragment {
+    private final EditText[] fields = new EditText[2];
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -61,18 +78,48 @@ public class LoginFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_login, container, false);
-        view.findViewById(R.id.signUpButton).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Navigation.findNavController(view).navigate(R.id.action_loginFragment_to_signUpFragment);
-            }
-        });
+
+        ServiceClient serviceClient = ServiceClient.sharedServiceClient(getActivity().getApplicationContext());
+        fields[0] = view.findViewById(R.id.usernameField);
+        fields[1] = view.findViewById(R.id.passwordField);
+
         view.findViewById(R.id.loginButton).setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                Navigation.findNavController(view).navigate(R.id.action_loginFragment_to_homePageFragment);
+            public void onClick(View v) {
+                if (allFieldsFilledOut(fields)) {
+                    String username = fields[0].getText().toString();
+                    String password = fields[1].getText().toString();
+
+                    UserModel userModel = new UserModel();
+                    userModel.getUser(username, password, new UserModel.GetUserResponseHandler() {
+                        @Override
+                        public void response(User user) {
+
+                        }
+
+                        @Override
+                        public void error() {
+
+                        }
+                    });
+                } else {
+                    changeBorderColors(fields);
+                    showToast(getContext());
+                }
             }
         });
+//        view.findViewById(R.id.signUpButton).setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Navigation.findNavController(view).navigate(R.id.action_loginFragment_to_signUpFragment);
+//            }
+//        });
+//        view.findViewById(R.id.loginButton).setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Navigation.findNavController(view).navigate(R.id.action_loginFragment_to_homePageFragment);
+//            }
+//        });
         return view;
 
     }
