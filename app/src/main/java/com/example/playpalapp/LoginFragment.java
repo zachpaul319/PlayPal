@@ -112,6 +112,13 @@ public class LoginFragment extends Fragment {
                 }
             }
         });
+
+        view.findViewById(R.id.signUpButton).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Navigation.findNavController(view).navigate(R.id.action_loginFragment_to_signUpFragment);
+            }
+        });
 //        view.findViewById(R.id.signUpButton).setOnClickListener(new View.OnClickListener() {
 //            @Override
 //            public void onClick(View view) {

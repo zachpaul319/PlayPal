@@ -1,5 +1,7 @@
 package com.example.playpalapp;
 
+import static com.example.playpalapp.FieldChecker.*;
+
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -8,6 +10,10 @@ import androidx.navigation.Navigation;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
+
+import com.example.playpalapp.model.NewUserRequest;
+import com.example.playpalapp.model.UserModel;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -15,6 +21,7 @@ import android.view.ViewGroup;
  * create an instance of this fragment.
  */
 public class SignUpFragment extends Fragment {
+    EditText[] fields = new EditText[4];
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -61,12 +68,48 @@ public class SignUpFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_sign_up, container, false);
+        fields[0] = view.findViewById(R.id.createUsernameField);
+        fields[1] = view.findViewById(R.id.createPasswordField);
+        fields[2] = view.findViewById(R.id.currentProductionField);
+        fields[3] = view.findViewById(R.id.pastProductionsField);
+
         view.findViewById(R.id.letsGoButton).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Navigation.findNavController(view).navigate(R.id.action_signUpFragment_to_homePageFragment);
+                if (allFieldsFilledOut(fields)) {
+                    String username = fields[0].getText().toString();
+                    String password = fields[1].getText().toString();
+                    String currentProduction = fields[2].getText().toString();
+                    String pastProductions = fields[3].getText().toString();
+
+                    NewUserRequest newUserRequestObject = new NewUserRequest(username, password, currentProduction, pastProductions);
+
+                    UserModel userModel = new UserModel();
+                    userModel.createUser(newUserRequestObject, new UserModel.CreateUserResponseHandler() {
+                        @Override
+                        public void response() {
+                            Toaster.showToast(getContext(), "Account Created");
+                        }
+
+                        @Override
+                        public void error() {
+                            Toaster.showToast(getContext(), "An error occurred");
+                        }
+                    });
+                } else {
+                    changeBorderColors(fields);
+                    showIncompleteFieldsToast(getContext());
+                }
             }
         });
+
+
+//        view.findViewById(R.id.letsGoButton).setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Navigation.findNavController(view).navigate(R.id.action_signUpFragment_to_homePageFragment);
+//            }
+//        });
         return view;
     }
 }
