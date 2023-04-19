@@ -22,7 +22,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/welcomeName"
+            android:id="@+id/welcomeNameView"
             android:layout_width="191dp"
             android:layout_height="84dp"
             android:layout_marginTop="56dp"
@@ -37,7 +37,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/currentProduction"
+            android:id="@+id/currentProductionView"
             android:layout_width="356dp"
             android:layout_height="89dp"
             android:layout_marginTop="44dp"
@@ -52,7 +52,7 @@
             app:layout_constraintTop_toBottomOf="@+id/imageView2" />
 
         <TextView
-            android:id="@+id/pastProductions"
+            android:id="@+id/pastProductionsView"
             android:layout_width="176dp"
             android:layout_height="129dp"
             android:layout_marginTop="48dp"
@@ -64,7 +64,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.509"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/currentProduction" />
+            app:layout_constraintTop_toBottomOf="@+id/currentProductionView" />
 
         <Button
             android:id="@+id/scriptButton"
@@ -80,7 +80,7 @@
             android:textStyle="bold"
             app:layout_constraintEnd_toStartOf="@+id/messagesButton"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/pastProductions" />
+            app:layout_constraintTop_toBottomOf="@+id/pastProductionsView" />
 
         <Button
             android:id="@+id/messagesButton"
@@ -94,6 +94,6 @@
             android:textSize="19sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/pastProductions" />
+            app:layout_constraintTop_toBottomOf="@+id/pastProductionsView" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </FrameLayout>

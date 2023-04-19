@@ -28,8 +28,7 @@ public class FieldChecker {
         }
     }
 
-    public static void showToast(Context context) {
-        Toast toast = Toast.makeText(context, "Make sure all fields are filled out", Toast.LENGTH_LONG);
-        toast.show();
+    public static void showIncompleteFieldsToast(Context context) {
+        Toaster.showToast(context, "Make sure all fields are filled out");
     }
 }

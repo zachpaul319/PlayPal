@@ -94,17 +94,21 @@ public class LoginFragment extends Fragment {
                     userModel.getUser(username, password, new UserModel.GetUserResponseHandler() {
                         @Override
                         public void response(User user) {
-
+                            Bundle bundle = new Bundle();
+                            bundle.putString("username", user.username);
+                            bundle.putString("currentProduction", user.currentProduction);
+                            bundle.putString("pastProductions", user.pastProductions);
+                            Navigation.findNavController(view).navigate(R.id.action_loginFragment_to_homePageFragment, bundle);
                         }
 
                         @Override
                         public void error() {
-
+                            Toaster.showToast(getContext(), "Invalid Login");
                         }
                     });
                 } else {
                     changeBorderColors(fields);
-                    showToast(getContext());
+                    showIncompleteFieldsToast(getContext());
                 }
             }
         });

@@ -40,6 +40,5 @@ public class UserModel {
         AuthRequest.password = password;
         ServiceClient client = ServiceClient.sharedServiceClient(null);
         client.addRequest(request);
-
     }
 }

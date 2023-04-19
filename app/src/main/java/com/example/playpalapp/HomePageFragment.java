@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -59,6 +60,19 @@ public class HomePageFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_home_page, container, false);
+        View view = inflater.inflate(R.layout.fragment_home_page, container, false);
+        String welcomeName = "Welcome " + getArguments().getString("username");
+        TextView welcomeNameView = view.findViewById(R.id.welcomeNameView);
+        welcomeNameView.setText(welcomeName);
+
+        String currentProduction = "Current Production:\n" + getArguments().getString("currentProduction");
+        TextView currentProductionView = view.findViewById(R.id.currentProductionView);
+        currentProductionView.setText(currentProduction);
+
+        String pastProductions = "Past Productions:\n" + getArguments().getString("pastProductions");
+        TextView pastProductionsView = view.findViewById(R.id.pastProductionsView);
+        pastProductionsView.setText(pastProductions);
+
+        return view;
     }
 }
