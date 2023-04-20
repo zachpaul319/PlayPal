@@ -8,9 +8,12 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.example.playpalapp.ServiceClient;
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.lang.reflect.Type;
 
 public class UserModel {
     public interface GetUserResponseHandler {
@@ -19,7 +22,7 @@ public class UserModel {
     }
 
     public interface CreateUserResponseHandler {
-        void response();
+        void response(int status);
         void error();
     }
 
@@ -61,7 +64,14 @@ public class UserModel {
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, "https://mopsdev.bw.edu/~zpaul20/playpal/www/rest.php/users/", jsonObject, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
-                handler.response();
+                Type responseStatus = new TypeToken<Integer>() {}.getType();
+                int status = 0;
+                try {
+                    status = gson.fromJson(response.get("status").toString(), responseStatus);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                handler.response(status);
             }
         }, new Response.ErrorListener() {
             @Override

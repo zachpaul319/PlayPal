@@ -1,11 +1,11 @@
 package com.example.playpalapp.model;
 
 public class User {
-    public int orderId;
+    public int userId;
     public String username, password, currentProduction, pastProductions;
 
-    public User(int orderId, String username, String password, String currentProduction, String pastProductions) {
-        this.orderId = orderId;
+    public User(int userId, String username, String password, String currentProduction, String pastProductions) {
+        this.userId = userId;
         this.username = username;
         this.password = password;
         this.currentProduction = currentProduction;

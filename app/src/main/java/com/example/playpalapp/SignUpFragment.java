@@ -87,8 +87,13 @@ public class SignUpFragment extends Fragment {
                     UserModel userModel = new UserModel();
                     userModel.createUser(newUserRequestObject, new UserModel.CreateUserResponseHandler() {
                         @Override
-                        public void response() {
-                            Toaster.showToast(getContext(), "Account Created");
+                        public void response(int status) {
+                            if (status == 1) {
+                                Toaster.showToast(getContext(), "Username already taken");
+                            } else {
+                                Navigation.findNavController(view).popBackStack();
+                                Toaster.showToast(getContext(), "Account Created. Please Login");
+                            }
                         }
 
                         @Override
@@ -102,14 +107,6 @@ public class SignUpFragment extends Fragment {
                 }
             }
         });
-
-
-//        view.findViewById(R.id.letsGoButton).setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Navigation.findNavController(view).navigate(R.id.action_signUpFragment_to_homePageFragment);
-//            }
-//        });
         return view;
     }
 }

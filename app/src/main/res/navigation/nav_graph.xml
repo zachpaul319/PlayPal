@@ -21,11 +21,7 @@
         android:id="@+id/signUpFragment"
         android:name="com.example.playpalapp.SignUpFragment"
         android:label="fragment_sign_up"
-        tools:layout="@layout/fragment_sign_up" >
-        <action
-            android:id="@+id/action_signUpFragment_to_homePageFragment"
-            app:destination="@id/homePageFragment" />
-    </fragment>
+        tools:layout="@layout/fragment_sign_up" />
     <fragment
         android:id="@+id/homePageFragment"
         android:name="com.example.playpalapp.HomePageFragment"

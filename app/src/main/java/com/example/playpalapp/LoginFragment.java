@@ -95,7 +95,9 @@ public class LoginFragment extends Fragment {
                         @Override
                         public void response(User user) {
                             Bundle bundle = new Bundle();
+                            bundle.putInt("userId", user.userId);
                             bundle.putString("username", user.username);
+                            bundle.putString("password", user.password);
                             bundle.putString("currentProduction", user.currentProduction);
                             bundle.putString("pastProductions", user.pastProductions);
                             Navigation.findNavController(view).navigate(R.id.action_loginFragment_to_homePageFragment, bundle);
@@ -119,19 +121,6 @@ public class LoginFragment extends Fragment {
                 Navigation.findNavController(view).navigate(R.id.action_loginFragment_to_signUpFragment);
             }
         });
-//        view.findViewById(R.id.signUpButton).setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Navigation.findNavController(view).navigate(R.id.action_loginFragment_to_signUpFragment);
-//            }
-//        });
-//        view.findViewById(R.id.loginButton).setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Navigation.findNavController(view).navigate(R.id.action_loginFragment_to_homePageFragment);
-//            }
-//        });
         return view;
-
     }
 }
