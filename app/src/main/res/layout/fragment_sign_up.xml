@@ -81,8 +81,8 @@
             android:id="@+id/textView6"
             android:layout_width="319dp"
             android:layout_height="0dp"
-            android:layout_marginTop="40dp"
-            android:text="What are some past productions you've worked on?"
+            android:layout_marginTop="28dp"
+            android:text="What are some past productions you've worked on? (If none, please leave blank)"
             android:textColor="@color/white"
             android:textSize="16sp"
             app:layout_constraintStart_toStartOf="@+id/textView3"
@@ -100,9 +100,9 @@
             app:layout_constraintTop_toBottomOf="@+id/textView5" />
 
         <EditText
-            android:id="@+id/pastProductionsField"
-            android:layout_width="223dp"
-            android:layout_height="77dp"
+            android:id="@+id/pastProductionsField1"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
             android:layout_marginTop="20dp"
             android:background="@color/white"
             android:ems="10"
@@ -115,14 +115,36 @@
             android:id="@+id/letsGoButton"
             android:layout_width="119dp"
             android:layout_height="64dp"
-            android:layout_marginTop="48dp"
             android:background="@color/yellow"
             android:text="@string/lets_go_btn"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.498"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/pastProductionsField"
-            app:layout_constraintVertical_bias="0.0" />
+            app:layout_constraintTop_toBottomOf="@+id/pastProductionsField3" />
+
+        <EditText
+            android:id="@+id/pastProductionsField2"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:layout_marginTop="8dp"
+            android:background="@color/white"
+            android:ems="10"
+            android:gravity="start|top"
+            android:inputType="textMultiLine"
+            app:layout_constraintStart_toStartOf="@+id/textView6"
+            app:layout_constraintTop_toBottomOf="@+id/pastProductionsField1" />
+
+        <EditText
+            android:id="@+id/pastProductionsField3"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:layout_marginTop="8dp"
+            android:background="@color/white"
+            android:ems="10"
+            android:gravity="start|top"
+            android:inputType="textMultiLine"
+            app:layout_constraintStart_toStartOf="@+id/textView6"
+            app:layout_constraintTop_toBottomOf="@+id/pastProductionsField2" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </FrameLayout>

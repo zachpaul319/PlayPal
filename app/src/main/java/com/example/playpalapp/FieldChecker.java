@@ -29,6 +29,6 @@ public class FieldChecker {
     }
 
     public static void showIncompleteFieldsToast(Context context) {
-        Toaster.showToast(context, "Make sure all fields are filled out");
+        Toaster.showToast(context, "Make sure all necessary fields are filled out");
     }
 }

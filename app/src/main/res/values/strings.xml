@@ -5,6 +5,10 @@
     <string name="lets_go_btn">Let\'s Go!</string>
     <string name="script_btn">Script</string>
     <string name="messages_btn">Messages</string>
+    <string name="past_productions">Past Productions:</string>
+    <string name="delete_account_btn">Delete Account</string>
+    <string name="edit_productions_btn">Edit Productions</string>
+    <string name="save_changes_btn">Save Changes</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

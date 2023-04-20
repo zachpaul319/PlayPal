@@ -21,7 +21,8 @@ import com.example.playpalapp.model.UserModel;
  * create an instance of this fragment.
  */
 public class SignUpFragment extends Fragment {
-    EditText[] fields = new EditText[4];
+    EditText[] necessaryFields = new EditText[3];
+    EditText[] pastProductionFields = new EditText[3];
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -68,21 +69,33 @@ public class SignUpFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_sign_up, container, false);
-        fields[0] = view.findViewById(R.id.createUsernameField);
-        fields[1] = view.findViewById(R.id.createPasswordField);
-        fields[2] = view.findViewById(R.id.currentProductionField);
-        fields[3] = view.findViewById(R.id.pastProductionsField);
+        necessaryFields[0] = view.findViewById(R.id.createUsernameField);
+        necessaryFields[1] = view.findViewById(R.id.createPasswordField);
+        necessaryFields[2] = view.findViewById(R.id.currentProductionField);
+
+        pastProductionFields[0] = view.findViewById(R.id.pastProductionsField1);
+        pastProductionFields[1] = view.findViewById(R.id.pastProductionsField2);
+        pastProductionFields[2] = view.findViewById(R.id.pastProductionsField3);
 
         view.findViewById(R.id.letsGoButton).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (allFieldsFilledOut(fields)) {
-                    String username = fields[0].getText().toString();
-                    String password = fields[1].getText().toString();
-                    String currentProduction = fields[2].getText().toString();
-                    String pastProductions = fields[3].getText().toString();
+                if (allFieldsFilledOut(necessaryFields)) {
+                    String username = necessaryFields[0].getText().toString();
+                    String password = necessaryFields[1].getText().toString();
+                    String currentProduction = necessaryFields[2].getText().toString();
 
-                    NewUserRequest newUserRequestObject = new NewUserRequest(username, password, currentProduction, pastProductions);
+                    StringBuilder pastProductions = new StringBuilder();
+                    for (int i = 0; i < pastProductionFields.length; i++) {
+                        String production = pastProductionFields[i].getText().toString();
+                        if ((!production.equals("")) && i != 0) {
+                            pastProductions.append(", " + production);
+                        } else {
+                            pastProductions.append(production);
+                        }
+                    }
+
+                    NewUserRequest newUserRequestObject = new NewUserRequest(username, password, currentProduction, pastProductions.toString());
 
                     UserModel userModel = new UserModel();
                     userModel.createUser(newUserRequestObject, new UserModel.CreateUserResponseHandler() {
@@ -102,7 +115,7 @@ public class SignUpFragment extends Fragment {
                         }
                     });
                 } else {
-                    changeBorderColors(fields);
+                    changeBorderColors(necessaryFields);
                     showIncompleteFieldsToast(getContext());
                 }
             }
