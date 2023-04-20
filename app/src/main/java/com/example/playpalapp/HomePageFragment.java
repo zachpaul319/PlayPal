@@ -1,13 +1,18 @@
 package com.example.playpalapp;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
+import com.example.playpalapp.model.UserModel;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -61,7 +66,12 @@ public class HomePageFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_home_page, container, false);
-        String welcomeName = "Welcome\n" + getArguments().getString("username");
+
+        int userId = getArguments().getInt("userId");
+        String username = getArguments().getString("username");
+        String password = getArguments().getString("password");
+
+        String welcomeName = "Welcome\n" + username;
         TextView welcomeNameView = view.findViewById(R.id.welcomeNameView);
         welcomeNameView.setText(welcomeName);
 
@@ -72,6 +82,53 @@ public class HomePageFragment extends Fragment {
         String pastProductions = getArguments().getString("pastProductions").replaceAll(", ", "\n");
         TextView pastProductionsView = view.findViewById(R.id.pastProductionsView);
         pastProductionsView.setText(pastProductions);
+
+        view.findViewById(R.id.deleteAccountButton).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                builder.setTitle("Delete Account");
+                builder.setMessage("Are you sure you want to delete your account?");
+                builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        UserModel userModel = new UserModel();
+                        userModel.deleteUser(userId, username, password, new UserModel.DeleteUserResponseHandler() {
+                            @Override
+                            public void response() {
+                                Navigation.findNavController(view).navigate(R.id.action_homePageFragment_to_loginFragment);
+                                Toaster.showToast(getContext(), "Account Deleted");
+                            }
+
+                            @Override
+                            public void error() {
+                                Toaster.showToast(getContext(), "An error occurred");
+                            }
+                        });
+                    }
+                });
+                builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.dismiss();
+                    }
+                });
+                AlertDialog alertDialog = builder.create();
+                alertDialog.show();
+            }
+        });
+
+        view.findViewById(R.id.editProductionsButton).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Bundle bundle = new Bundle();
+                bundle.putInt("userId", userId);
+                bundle.putString("username", username);
+                bundle.putString("password", password);
+
+                Navigation.findNavController(view).navigate(R.id.action_homePageFragment_to_editProductionsFragment, bundle);
+            }
+        });
 
         return view;
     }

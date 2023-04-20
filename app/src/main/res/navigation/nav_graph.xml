@@ -30,10 +30,17 @@
         <action
             android:id="@+id/action_homePageFragment_to_editProductionsFragment"
             app:destination="@id/editProductionsFragment" />
+        <action
+            android:id="@+id/action_homePageFragment_to_loginFragment"
+            app:destination="@id/loginFragment" />
     </fragment>
     <fragment
         android:id="@+id/editProductionsFragment"
         android:name="com.example.playpalapp.EditProductionsFragment"
         android:label="fragment_edit_productions"
-        tools:layout="@layout/fragment_edit_productions" />
+        tools:layout="@layout/fragment_edit_productions" >
+        <action
+            android:id="@+id/action_editProductionsFragment_to_homePageFragment"
+            app:destination="@id/homePageFragment" />
+    </fragment>
 </navigation>

@@ -1,7 +1,5 @@
 package com.example.playpalapp.model;
 
-import android.widget.Toast;
-
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -23,6 +21,16 @@ public class UserModel {
 
     public interface CreateUserResponseHandler {
         void response(int status);
+        void error();
+    }
+
+    public interface UpdateUserProductionsResponseHandler {
+        void response();
+        void error();
+    }
+
+    public interface DeleteUserResponseHandler {
+        void response();
         void error();
     }
 
@@ -79,6 +87,52 @@ public class UserModel {
                 handler.error();
             }
         });
+        ServiceClient client = ServiceClient.sharedServiceClient(null);
+        client.addRequest(jsonObjectRequest);
+    }
+
+    public void updateUserProductions(int userId, String username, String password, UpdateUserProductionsRequest updateUserProductionsRequest, UpdateUserProductionsResponseHandler handler) {
+        Gson gson = new Gson();
+        String json = gson.toJson(updateUserProductionsRequest);
+
+        JSONObject jsonObject = null;
+        try {
+            jsonObject = new JSONObject(json);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        JsonObjectRequest jsonObjectRequest = new AuthRequest(Request.Method.PUT, "https://mopsdev.bw.edu/~zpaul20/playpal/www/rest.php/users/" + Integer.toString(userId), jsonObject, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                handler.response();
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                handler.error();
+            }
+        });
+        AuthRequest.username = username;
+        AuthRequest.password = password;
+        ServiceClient client = ServiceClient.sharedServiceClient(null);
+        client.addRequest(jsonObjectRequest);
+    }
+
+    public void deleteUser(int userId, String username, String password, DeleteUserResponseHandler handler) {
+        JsonObjectRequest jsonObjectRequest = new AuthRequest(Request.Method.DELETE, "https://mopsdev.bw.edu/~zpaul20/playpal/www/rest.php/users/" + Integer.toString(userId), null, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                handler.response();
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                handler.error();
+            }
+        });
+        AuthRequest.username = username;
+        AuthRequest.password = password;
         ServiceClient client = ServiceClient.sharedServiceClient(null);
         client.addRequest(jsonObjectRequest);
     }

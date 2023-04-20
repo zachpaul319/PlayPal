@@ -1,12 +1,19 @@
 package com.example.playpalapp;
 
+import static com.example.playpalapp.FieldChecker.*;
+
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
+
+import com.example.playpalapp.model.UpdateUserProductionsRequest;
+import com.example.playpalapp.model.UserModel;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -14,6 +21,8 @@ import android.view.ViewGroup;
  * create an instance of this fragment.
  */
 public class EditProductionsFragment extends Fragment {
+    EditText[] currentProductionEditField = new EditText[1];
+    EditText[] pastProductionEditFields = new EditText[3];
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -59,6 +68,62 @@ public class EditProductionsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_edit_productions, container, false);
+        View view = inflater.inflate(R.layout.fragment_edit_productions, container, false);
+        currentProductionEditField[0] = view.findViewById(R.id.currentProductionEditField);
+        
+        pastProductionEditFields[0] = view.findViewById(R.id.pastProductionsEditField1);
+        pastProductionEditFields[1] = view.findViewById(R.id.pastProductionsEditField2);
+        pastProductionEditFields[2] = view.findViewById(R.id.pastProductionsEditField3);
+        
+        int userId = getArguments().getInt("userId");
+        String username = getArguments().getString("username");
+        String password = getArguments().getString("password");
+        
+        view.findViewById(R.id.saveChangesButton).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (allFieldsFilledOut(currentProductionEditField)) {
+                    String currentProduction = currentProductionEditField[0].getText().toString();
+
+                    StringBuilder pastProductions = new StringBuilder();
+                    for (int i = 0; i < pastProductionEditFields.length; i++) {
+                        String production = pastProductionEditFields[i].getText().toString();
+                        if ((!production.equals("")) && i != 0) {
+                            pastProductions.append(", " + production);
+                        } else {
+                            pastProductions.append(production);
+                        }
+                    }
+
+                    UpdateUserProductionsRequest updateUserProductionsRequestObject = new UpdateUserProductionsRequest(currentProduction, pastProductions.toString());
+                    
+                    UserModel userModel = new UserModel();
+                    userModel.updateUserProductions(userId, username, password, updateUserProductionsRequestObject, new UserModel.UpdateUserProductionsResponseHandler() {
+                        @Override
+                        public void response() {
+                            Bundle bundle = new Bundle();
+                            bundle.putInt("userId", userId);
+                            bundle.putString("username", username);
+                            bundle.putString("password", password);
+                            bundle.putString("currentProduction", currentProduction);
+                            bundle.putString("pastProductions", pastProductions.toString());
+
+                            Navigation.findNavController(view).navigate(R.id.action_editProductionsFragment_to_homePageFragment, bundle);
+                            Toaster.showToast(getContext(), "Productions Successfully Updated");
+                        }
+
+                        @Override
+                        public void error() {
+                            Toaster.showToast(getContext(), "An error occurred");
+                        }
+                    });
+                } else {
+                    changeBorderColors(currentProductionEditField);
+                    showIncompleteFieldsToast(getContext());
+                }
+            }
+        });
+        
+        return view;
     }
 }
