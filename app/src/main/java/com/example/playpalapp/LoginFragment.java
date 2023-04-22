@@ -31,8 +31,6 @@ import org.json.JSONObject;
  * create an instance of this fragment.
  */
 public class LoginFragment extends Fragment {
-    private final EditText[] fields = new EditText[2];
-
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -78,8 +76,8 @@ public class LoginFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_login, container, false);
+        EditText[] fields = new EditText[2];
 
-        ServiceClient serviceClient = ServiceClient.sharedServiceClient(getActivity().getApplicationContext());
         fields[0] = view.findViewById(R.id.usernameField);
         fields[1] = view.findViewById(R.id.passwordField);
 

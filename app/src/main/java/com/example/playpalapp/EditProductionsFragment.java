@@ -21,9 +21,6 @@ import com.example.playpalapp.model.UserModel;
  * create an instance of this fragment.
  */
 public class EditProductionsFragment extends Fragment {
-    EditText[] currentProductionEditField = new EditText[1];
-    EditText[] pastProductionEditFields = new EditText[3];
-
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -69,6 +66,9 @@ public class EditProductionsFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_edit_productions, container, false);
+        EditText[] currentProductionEditField = new EditText[1];
+        EditText[] pastProductionEditFields = new EditText[3];
+
         currentProductionEditField[0] = view.findViewById(R.id.currentProductionEditField);
         
         pastProductionEditFields[0] = view.findViewById(R.id.pastProductionsEditField1);
@@ -81,14 +81,14 @@ public class EditProductionsFragment extends Fragment {
         
         view.findViewById(R.id.saveChangesButton).setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
+            public void onClick(View v) {
                 if (allFieldsFilledOut(currentProductionEditField)) {
                     String currentProduction = currentProductionEditField[0].getText().toString();
 
                     StringBuilder pastProductions = new StringBuilder();
                     for (int i = 0; i < pastProductionEditFields.length; i++) {
                         String production = pastProductionEditFields[i].getText().toString();
-                        if ((!production.equals("")) && i != 0) {
+                        if (!production.equals("") && i != 0) {
                             pastProductions.append(", " + production);
                         } else {
                             pastProductions.append(production);
@@ -96,7 +96,7 @@ public class EditProductionsFragment extends Fragment {
                     }
 
                     UpdateUserProductionsRequest updateUserProductionsRequestObject = new UpdateUserProductionsRequest(currentProduction, pastProductions.toString());
-                    
+
                     UserModel userModel = new UserModel();
                     userModel.updateUserProductions(userId, username, password, updateUserProductionsRequestObject, new UserModel.UpdateUserProductionsResponseHandler() {
                         @Override

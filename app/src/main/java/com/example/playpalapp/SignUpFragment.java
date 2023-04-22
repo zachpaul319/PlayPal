@@ -21,9 +21,6 @@ import com.example.playpalapp.model.UserModel;
  * create an instance of this fragment.
  */
 public class SignUpFragment extends Fragment {
-    EditText[] necessaryFields = new EditText[3];
-    EditText[] pastProductionFields = new EditText[3];
-
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -69,6 +66,9 @@ public class SignUpFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_sign_up, container, false);
+        EditText[] necessaryFields = new EditText[3];
+        EditText[] pastProductionFields = new EditText[3];
+
         necessaryFields[0] = view.findViewById(R.id.createUsernameField);
         necessaryFields[1] = view.findViewById(R.id.createPasswordField);
         necessaryFields[2] = view.findViewById(R.id.currentProductionField);
@@ -79,7 +79,7 @@ public class SignUpFragment extends Fragment {
 
         view.findViewById(R.id.letsGoButton).setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
+            public void onClick(View v) {
                 if (allFieldsFilledOut(necessaryFields)) {
                     String username = necessaryFields[0].getText().toString();
                     String password = necessaryFields[1].getText().toString();

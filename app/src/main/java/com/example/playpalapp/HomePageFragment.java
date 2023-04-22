@@ -85,7 +85,7 @@ public class HomePageFragment extends Fragment {
 
         view.findViewById(R.id.deleteAccountButton).setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
+            public void onClick(View v) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
                 builder.setTitle("Delete Account");
                 builder.setMessage("Are you sure you want to delete your account?");
@@ -120,7 +120,7 @@ public class HomePageFragment extends Fragment {
 
         view.findViewById(R.id.editProductionsButton).setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
+            public void onClick(View v) {
                 Bundle bundle = new Bundle();
                 bundle.putInt("userId", userId);
                 bundle.putString("username", username);
