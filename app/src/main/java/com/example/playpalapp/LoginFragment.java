@@ -89,7 +89,7 @@ public class LoginFragment extends Fragment {
                     String password = fields[1].getText().toString();
 
                     UserModel userModel = new UserModel();
-                    userModel.getUser(username, password, new UserModel.GetUserResponseHandler() {
+                    userModel.getUser(getContext(), username, password, new UserModel.GetUserResponseHandler() {
                         @Override
                         public void response(User user) {
                             Bundle bundle = new Bundle();

@@ -1,5 +1,7 @@
 package com.example.playpalapp.model;
 
+import android.content.Context;
+
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -34,7 +36,7 @@ public class UserModel {
         void error();
     }
 
-    public void getUser(String username, String password, GetUserResponseHandler handler) {
+    public void getUser(Context context, String username, String password, GetUserResponseHandler handler) {
         JsonObjectRequest request = new AuthRequest(Request.Method.GET, "https://mopsdev.bw.edu/~zpaul20/playpal/www/rest.php/users/", null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
@@ -54,7 +56,7 @@ public class UserModel {
         });
         AuthRequest.username = username;
         AuthRequest.password = password;
-        ServiceClient client = ServiceClient.sharedServiceClient(null);
+        ServiceClient client = ServiceClient.sharedServiceClient(context);
         client.addRequest(request);
     }
 
