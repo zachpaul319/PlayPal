@@ -133,7 +133,7 @@ public class HomePageFragment extends Fragment {
                 Navigation.findNavController(view).navigate(R.id.action_homePageFragment_to_editProductionsFragment, bundle);
             }
         });
-        int contactId = 7; //deleteMe
+        int contactId = 6; //delete me
         view.findViewById(R.id.messagesButton).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
