@@ -23,6 +23,11 @@ public class MessageModel {
         void error();
     }
 
+    public interface SendMessageResponseHandler {
+        void response(int messageId);
+        void error();
+    }
+
     public void getMessages(Context context, int userId, int contactId, GetMessagesResponseHandler handler) {
         JsonObjectRequest jsonObjectRequest = new AuthRequest(Request.Method.GET, "https://mopsdev.bw.edu/~zpaul20/playpal/www/rest.php/messages/" + Integer.toString(userId) + "/" + Integer.toString(contactId), null, new Response.Listener<JSONObject>() {
             @Override
@@ -43,6 +48,38 @@ public class MessageModel {
             }
         });
         ServiceClient client = ServiceClient.sharedServiceClient(context);
+        client.addRequest(jsonObjectRequest);
+    }
+
+    public void sendMessage(NewMessageRequest newMessageRequest, SendMessageResponseHandler handler) {
+        Gson gson = new Gson();
+        String json = gson.toJson(newMessageRequest);
+
+        JSONObject jsonObject = null;
+        try {
+            jsonObject = new JSONObject(json);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        JsonObjectRequest jsonObjectRequest = new AuthRequest(Request.Method.POST, "https://mopsdev.bw.edu/~zpaul20/playpal/www/rest.php/messages/", jsonObject, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                Type returnedMessageId = new TypeToken<Integer>() {}.getType();
+                try {
+                    int messageId = gson.fromJson(response.get("data").toString(), returnedMessageId);
+                    handler.response(messageId);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                handler.error();
+            }
+        });
+        ServiceClient client = ServiceClient.sharedServiceClient(null);
         client.addRequest(jsonObjectRequest);
     }
 }

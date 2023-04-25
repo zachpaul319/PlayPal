@@ -14,6 +14,7 @@ import android.widget.ImageButton;
 
 import com.example.playpalapp.model.Message;
 import com.example.playpalapp.model.MessageModel;
+import com.example.playpalapp.model.NewMessageRequest;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,7 +29,7 @@ public class MessagesFragment extends Fragment {
     EditText messageEditText;
     ImageButton sendButton;
     List<Message> messages;
-    int userId;
+    int userId, contactId;
     MessagesAdapter messagesAdapter;
 
     // TODO: Rename parameter arguments, choose names that match
@@ -77,6 +78,8 @@ public class MessagesFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_messages, container, false);
         userId = getArguments().getInt("userId");
+        //contactId = getArguments().getInt("contactId");
+        contactId = 10;
         messages = (List<Message>) getArguments().getSerializable("messageList");
 
         recyclerView = view.findViewById(R.id.recycler_view);
@@ -89,14 +92,39 @@ public class MessagesFragment extends Fragment {
         llm.setStackFromEnd(true);
         recyclerView.setLayoutManager(llm);
 
-
-
         sendButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                String text = messageEditText.getText().toString();
+                if (!text.equals("")) {
+                    NewMessageRequest newMessageRequest = new NewMessageRequest(userId, contactId, text);
+                    MessageModel messageModel = new MessageModel();
+                    messageModel.sendMessage(newMessageRequest, new MessageModel.SendMessageResponseHandler() {
+                        @Override
+                        public void response(int messageId) {
+                            addMessage(messageId, userId, contactId, text);
+                            messageEditText.setText("");
+                        }
 
+                        @Override
+                        public void error() {
+                            Toaster.showToast(getContext(), "Message not sent");
+                        }
+                    });
+                }
             }
         });
         return view;
+    }
+
+    private void addMessage(int messageId, int senderId, int recipientId, String text) {
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                messages.add(new Message(messageId, senderId, recipientId, text));
+                messagesAdapter.notifyDataSetChanged();
+                recyclerView.smoothScrollToPosition(messagesAdapter.getItemCount());
+            }
+        });
     }
 }
