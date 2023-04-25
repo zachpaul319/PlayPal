@@ -93,7 +93,7 @@ public class UserModel {
         client.addRequest(jsonObjectRequest);
     }
 
-    public void updateUserProductions(int userId, String username, String password, UpdateUserProductionsRequest updateUserProductionsRequest, UpdateUserProductionsResponseHandler handler) {
+    public void updateUserProductions(int userId, UpdateUserProductionsRequest updateUserProductionsRequest, UpdateUserProductionsResponseHandler handler) {
         Gson gson = new Gson();
         String json = gson.toJson(updateUserProductionsRequest);
 
@@ -115,13 +115,11 @@ public class UserModel {
                 handler.error();
             }
         });
-        AuthRequest.username = username;
-        AuthRequest.password = password;
         ServiceClient client = ServiceClient.sharedServiceClient(null);
         client.addRequest(jsonObjectRequest);
     }
 
-    public void deleteUser(int userId, String username, String password, DeleteUserResponseHandler handler) {
+    public void deleteUser(int userId, DeleteUserResponseHandler handler) {
         JsonObjectRequest jsonObjectRequest = new AuthRequest(Request.Method.DELETE, "https://mopsdev.bw.edu/~zpaul20/playpal/www/rest.php/users/" + Integer.toString(userId), null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
@@ -133,8 +131,6 @@ public class UserModel {
                 handler.error();
             }
         });
-        AuthRequest.username = username;
-        AuthRequest.password = password;
         ServiceClient client = ServiceClient.sharedServiceClient(null);
         client.addRequest(jsonObjectRequest);
     }

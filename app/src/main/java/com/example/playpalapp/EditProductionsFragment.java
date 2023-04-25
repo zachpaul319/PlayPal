@@ -77,7 +77,6 @@ public class EditProductionsFragment extends Fragment {
         
         int userId = getArguments().getInt("userId");
         String username = getArguments().getString("username");
-        String password = getArguments().getString("password");
         
         view.findViewById(R.id.saveChangesButton).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -98,13 +97,12 @@ public class EditProductionsFragment extends Fragment {
                     UpdateUserProductionsRequest updateUserProductionsRequestObject = new UpdateUserProductionsRequest(currentProduction, pastProductions.toString());
 
                     UserModel userModel = new UserModel();
-                    userModel.updateUserProductions(userId, username, password, updateUserProductionsRequestObject, new UserModel.UpdateUserProductionsResponseHandler() {
+                    userModel.updateUserProductions(userId, updateUserProductionsRequestObject, new UserModel.UpdateUserProductionsResponseHandler() {
                         @Override
                         public void response() {
                             Bundle bundle = new Bundle();
                             bundle.putInt("userId", userId);
                             bundle.putString("username", username);
-                            bundle.putString("password", password);
                             bundle.putString("currentProduction", currentProduction);
                             bundle.putString("pastProductions", pastProductions.toString());
 

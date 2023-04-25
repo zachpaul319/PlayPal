@@ -95,7 +95,6 @@ public class LoginFragment extends Fragment {
                             Bundle bundle = new Bundle();
                             bundle.putInt("userId", user.userId);
                             bundle.putString("username", user.username);
-                            bundle.putString("password", password);
                             bundle.putString("currentProduction", user.currentProduction);
                             bundle.putString("pastProductions", user.pastProductions);
                             Navigation.findNavController(view).navigate(R.id.action_loginFragment_to_homePageFragment, bundle);

@@ -12,7 +12,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.example.playpalapp.model.Message;
+import com.example.playpalapp.model.MessageModel;
 import com.example.playpalapp.model.UserModel;
+
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -69,7 +75,6 @@ public class HomePageFragment extends Fragment {
 
         int userId = getArguments().getInt("userId");
         String username = getArguments().getString("username");
-        String password = getArguments().getString("password");
 
         String welcomeName = "Welcome\n" + username;
         TextView welcomeNameView = view.findViewById(R.id.welcomeNameView);
@@ -93,7 +98,7 @@ public class HomePageFragment extends Fragment {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         UserModel userModel = new UserModel();
-                        userModel.deleteUser(userId, username, password, new UserModel.DeleteUserResponseHandler() {
+                        userModel.deleteUser(userId, new UserModel.DeleteUserResponseHandler() {
                             @Override
                             public void response() {
                                 Navigation.findNavController(view).navigate(R.id.action_homePageFragment_to_loginFragment);
@@ -124,9 +129,29 @@ public class HomePageFragment extends Fragment {
                 Bundle bundle = new Bundle();
                 bundle.putInt("userId", userId);
                 bundle.putString("username", username);
-                bundle.putString("password", password);
 
                 Navigation.findNavController(view).navigate(R.id.action_homePageFragment_to_editProductionsFragment, bundle);
+            }
+        });
+
+        view.findViewById(R.id.messagesButton).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                MessageModel messageModel = new MessageModel();
+                messageModel.getMessages(getContext(), userId, 6, new MessageModel.GetMessagesResponseHandler() {
+                    @Override
+                    public void response(List<Message> messageList) {
+                        Bundle bundle = new Bundle();
+                        bundle.putInt("userId", userId);
+                        bundle.putSerializable("messageList", (Serializable) messageList);
+                        Navigation.findNavController(view).navigate(R.id.action_homePageFragment_to_messagesFragment, bundle);
+                    }
+
+                    @Override
+                    public void error() {
+                        Toaster.showToast(getContext(), "An error occurred");
+                    }
+                });
             }
         });
 
