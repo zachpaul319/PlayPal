@@ -1,5 +1,7 @@
 package com.example.playpalapp;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -24,7 +26,7 @@ import java.util.List;
  * Use the {@link MessagesFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class MessagesFragment extends Fragment {
+public class MessagesFragment extends Fragment implements MessagesAdapter.MessagesAdapterDelegate{
     RecyclerView recyclerView;
     EditText messageEditText;
     ImageButton sendButton;
@@ -78,8 +80,7 @@ public class MessagesFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_messages, container, false);
         userId = getArguments().getInt("userId");
-        //contactId = getArguments().getInt("contactId");
-        contactId = 10;
+        contactId = getArguments().getInt("contactId");
         messages = (List<Message>) getArguments().getSerializable("messageList");
 
         recyclerView = view.findViewById(R.id.recycler_view);
@@ -87,6 +88,7 @@ public class MessagesFragment extends Fragment {
         sendButton = view.findViewById(R.id.send_btn);
 
         messagesAdapter = new MessagesAdapter(messages, userId);
+        messagesAdapter.delegate = this;
         recyclerView.setAdapter(messagesAdapter);
         LinearLayoutManager llm = new LinearLayoutManager(getContext());
         llm.setStackFromEnd(true);
@@ -126,5 +128,51 @@ public class MessagesFragment extends Fragment {
                 recyclerView.smoothScrollToPosition(messagesAdapter.getItemCount());
             }
         });
+    }
+
+    private void removeMessage(int position) {
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                messages.remove(position);
+                messagesAdapter.notifyDataSetChanged();
+                recyclerView.smoothScrollToPosition(messagesAdapter.getItemCount());
+            }
+        });
+    }
+
+    @Override
+    public void didSelectMessage(int position) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        builder.setTitle("Delete Message");
+        builder.setMessage("Are you sure you want to delete this message?");
+        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                int messageId = messages.get(position).messageId;
+
+                MessageModel messageModel = new MessageModel();
+                messageModel.deleteMessage(messageId, new MessageModel.DeleteMessageResponseHandler() {
+                    @Override
+                    public void response() {
+                        removeMessage(position);
+                        Toaster.showToast(getContext(), "Message deleted");
+                    }
+
+                    @Override
+                    public void error() {
+                        Toaster.showToast(getContext(), "Couldn't delete message");
+                    }
+                });
+            }
+        });
+        builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.dismiss();
+            }
+        });
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
     }
 }

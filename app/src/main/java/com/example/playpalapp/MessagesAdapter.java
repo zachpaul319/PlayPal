@@ -15,8 +15,10 @@ import java.util.List;
 
 public class MessagesAdapter extends RecyclerView.Adapter<MessagesAdapter.MyViewHolder> {
     public interface MessagesAdapterDelegate {
-        void didSelectMessage();
+        void didSelectMessage(int position);
     }
+
+    MessagesAdapterDelegate delegate;
 
     List<Message> messageList;
     int userId;
@@ -46,6 +48,12 @@ public class MessagesAdapter extends RecyclerView.Adapter<MessagesAdapter.MyView
             holder.leftChatView.setVisibility(View.VISIBLE);
             holder.leftTextView.setText(message.text);
         }
+
+        holder.itemView.setOnClickListener(v -> {
+            if (delegate != null) {
+                delegate.didSelectMessage(position);
+            }
+        });
 
     }
 

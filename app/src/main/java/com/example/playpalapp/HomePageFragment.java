@@ -133,7 +133,7 @@ public class HomePageFragment extends Fragment {
                 Navigation.findNavController(view).navigate(R.id.action_homePageFragment_to_editProductionsFragment, bundle);
             }
         });
-        int contactId = 10; //deleteMe
+        int contactId = 7; //deleteMe
         view.findViewById(R.id.messagesButton).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -143,6 +143,7 @@ public class HomePageFragment extends Fragment {
                     public void response(List<Message> messageList) {
                         Bundle bundle = new Bundle();
                         bundle.putInt("userId", userId);
+                        bundle.putInt("contactId", contactId);
                         bundle.putSerializable("messageList", (Serializable) messageList);
                         Navigation.findNavController(view).navigate(R.id.action_homePageFragment_to_messagesFragment, bundle);
                     }

@@ -28,6 +28,11 @@ public class MessageModel {
         void error();
     }
 
+    public interface DeleteMessageResponseHandler {
+        void response();
+        void error();
+    }
+
     public void getMessages(Context context, int userId, int contactId, GetMessagesResponseHandler handler) {
         JsonObjectRequest jsonObjectRequest = new AuthRequest(Request.Method.GET, "https://mopsdev.bw.edu/~zpaul20/playpal/www/rest.php/messages/" + Integer.toString(userId) + "/" + Integer.toString(contactId), null, new Response.Listener<JSONObject>() {
             @Override
@@ -72,6 +77,22 @@ public class MessageModel {
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                handler.error();
+            }
+        });
+        ServiceClient client = ServiceClient.sharedServiceClient(null);
+        client.addRequest(jsonObjectRequest);
+    }
+
+    public void deleteMessage(int messageId, DeleteMessageResponseHandler handler) {
+        JsonObjectRequest jsonObjectRequest = new AuthRequest(Request.Method.DELETE, "https://mopsdev.bw.edu/~zpaul20/playpal/www/rest.php/messages/" + Integer.toString(messageId), null, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                handler.response();
             }
         }, new Response.ErrorListener() {
             @Override
