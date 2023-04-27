@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.example.playpalapp.model.Contact;
 import com.example.playpalapp.model.Message;
 import com.example.playpalapp.model.MessageModel;
 import com.example.playpalapp.model.UserModel;
@@ -133,19 +134,18 @@ public class HomePageFragment extends Fragment {
                 Navigation.findNavController(view).navigate(R.id.action_homePageFragment_to_editProductionsFragment, bundle);
             }
         });
-        int contactId = 6; //delete me
+
         view.findViewById(R.id.messagesButton).setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                MessageModel messageModel = new MessageModel();
-                messageModel.getMessages(getContext(), userId, contactId, new MessageModel.GetMessagesResponseHandler() {
+            public void onClick(View v) {
+                ContactModel contactModel = new ContactModel();
+                contactModel.getContacts(getContext(), userId, new ContactModel.GetContactsResponseHandler() {
                     @Override
-                    public void response(List<Message> messageList) {
+                    public void response(List<Contact> contactList) {
                         Bundle bundle = new Bundle();
                         bundle.putInt("userId", userId);
-                        bundle.putInt("contactId", contactId);
-                        bundle.putSerializable("messageList", (Serializable) messageList);
-                        Navigation.findNavController(view).navigate(R.id.action_homePageFragment_to_messagesFragment, bundle);
+                        bundle.putSerializable("contactList", (Serializable) contactList);
+                        Navigation.findNavController(view).navigate(R.id.action_homePageFragment_to_contactsFragment, bundle);
                     }
 
                     @Override

@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="95dp"
+        android:background="@color/darker_orange">
+
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:id="@+id/contact_logo"
+            app:cardCornerRadius="60dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginLeft="20dp">
+
+            <ImageView
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:id="@+id/colored_logo"
+                android:scaleType="centerCrop"
+                android:src="@drawable/logo"
+                android:background="@color/teal_200">
+
+            </ImageView>
+
+
+        </androidx.cardview.widget.CardView>
+
+        <TextView
+            android:id="@+id/contact_name"
+            android:layout_width="120dp"
+            android:layout_height="30dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="20dp"
+            android:layout_toRightOf="@+id/contact_logo"
+            android:text="Zach"
+            android:textSize="20dp"
+            android:textColor="@color/white"
+            android:textStyle="bold"></TextView>
+
+        <TextView
+            android:id="@+id/last_message"
+            android:layout_width="300dp"
+            android:layout_height="30dp"
+            android:text="How are you?"
+            android:textSize="15sp"
+            android:textColor="@color/white"
+            android:layout_toRightOf="@+id/contact_logo"
+            android:layout_below="@+id/contact_name"
+            android:layout_marginLeft="20dp">
+        </TextView>
+
+        <TextView
+            android:id="@+id/line"
+            android:layout_width="match_parent"
+            android:layout_height="20dp"
+            android:text="------------------------------------------------------------------------------"
+            android:textColor="@color/white"
+            android:layout_toRightOf="@+id/contact_logo"
+            android:layout_marginTop="-5dp"
+            android:layout_below="@+id/contact_logo"
+            android:layout_marginLeft="20dp">
+        </TextView>
+
+    </RelativeLayout>
+
+
+
+</RelativeLayout>

@@ -19,9 +19,21 @@
     <androidx.recyclerview.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/recycler_view"
+        android:id="@+id/messages_recycler_view"
         android:layout_above="@id/bottom_layout"
         />
+
+    <TextView
+        android:id="@+id/name_messages_top"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:gravity="center"
+        android:text="Welcome Name"
+        android:textColor="@color/white"
+        android:background="@color/darker_orange"
+        android:textSize="32dp"
+        android:textStyle="bold" />
 
     <RelativeLayout
         android:layout_width="match_parent"

@@ -34,8 +34,8 @@
             android:id="@+id/action_homePageFragment_to_loginFragment"
             app:destination="@id/loginFragment" />
         <action
-            android:id="@+id/action_homePageFragment_to_messagesFragment"
-            app:destination="@id/messagesFragment" />
+            android:id="@+id/action_homePageFragment_to_contactsFragment"
+            app:destination="@id/contactsFragment" />
     </fragment>
     <fragment
         android:id="@+id/editProductionsFragment"
@@ -51,4 +51,13 @@
         android:name="com.example.playpalapp.MessagesFragment"
         android:label="fragment_messages"
         tools:layout="@layout/fragment_messages" />
+    <fragment
+        android:id="@+id/contactsFragment"
+        android:name="com.example.playpalapp.ContactsFragment"
+        android:label="fragment_contacts"
+        tools:layout="@layout/fragment_contacts" >
+        <action
+            android:id="@+id/action_contactsFragment_to_messagesFragment"
+            app:destination="@id/messagesFragment" />
+    </fragment>
 </navigation>

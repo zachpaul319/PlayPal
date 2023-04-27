@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.TextView;
 
 import com.example.playpalapp.model.Message;
 import com.example.playpalapp.model.MessageModel;
@@ -29,9 +30,11 @@ import java.util.List;
 public class MessagesFragment extends Fragment implements MessagesAdapter.MessagesAdapterDelegate{
     RecyclerView recyclerView;
     EditText messageEditText;
+    TextView nameMessageTop;
     ImageButton sendButton;
     List<Message> messages;
     int userId, contactId;
+    String contactName;
     MessagesAdapter messagesAdapter;
 
     // TODO: Rename parameter arguments, choose names that match
@@ -81,9 +84,10 @@ public class MessagesFragment extends Fragment implements MessagesAdapter.Messag
         View view = inflater.inflate(R.layout.fragment_messages, container, false);
         userId = getArguments().getInt("userId");
         contactId = getArguments().getInt("contactId");
+        contactName = getArguments().getString("contactName");
         messages = (List<Message>) getArguments().getSerializable("messageList");
 
-        recyclerView = view.findViewById(R.id.recycler_view);
+        recyclerView = view.findViewById(R.id.messages_recycler_view);
         messageEditText = view.findViewById(R.id.message_edit_text);
         sendButton = view.findViewById(R.id.send_btn);
 
@@ -93,6 +97,9 @@ public class MessagesFragment extends Fragment implements MessagesAdapter.Messag
         LinearLayoutManager llm = new LinearLayoutManager(getContext());
         llm.setStackFromEnd(true);
         recyclerView.setLayoutManager(llm);
+
+        nameMessageTop = view.findViewById(R.id.name_messages_top);
+        nameMessageTop.setText(contactName);
 
         sendButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -117,28 +124,6 @@ public class MessagesFragment extends Fragment implements MessagesAdapter.Messag
             }
         });
         return view;
-    }
-
-    private void addMessage(int messageId, int senderId, int recipientId, String text) {
-        getActivity().runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                messages.add(new Message(messageId, senderId, recipientId, text));
-                messagesAdapter.notifyDataSetChanged();
-                recyclerView.smoothScrollToPosition(messagesAdapter.getItemCount());
-            }
-        });
-    }
-
-    private void removeMessage(int position) {
-        getActivity().runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                messages.remove(position);
-                messagesAdapter.notifyDataSetChanged();
-                recyclerView.smoothScrollToPosition(messagesAdapter.getItemCount());
-            }
-        });
     }
 
     @Override
@@ -174,5 +159,27 @@ public class MessagesFragment extends Fragment implements MessagesAdapter.Messag
         });
         AlertDialog alertDialog = builder.create();
         alertDialog.show();
+    }
+
+    private void addMessage(int messageId, int senderId, int recipientId, String text) {
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                messages.add(new Message(messageId, senderId, recipientId, text));
+                messagesAdapter.notifyDataSetChanged();
+                recyclerView.smoothScrollToPosition(messagesAdapter.getItemCount());
+            }
+        });
+    }
+
+    private void removeMessage(int position) {
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                messages.remove(position);
+                messagesAdapter.notifyDataSetChanged();
+                recyclerView.smoothScrollToPosition(messagesAdapter.getItemCount());
+            }
+        });
     }
 }
