@@ -14,10 +14,17 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.lang.reflect.Type;
+import java.util.ArrayList;
+import java.util.List;
 
 public class UserModel {
     public interface GetUserResponseHandler {
         void response(User user);
+        void error();
+    }
+
+    public interface GetAllUsersResponseHandler {
+        void response(List<User> userList);
         void error();
     }
 
@@ -36,8 +43,8 @@ public class UserModel {
         void error();
     }
 
-    public void getUser(Context context, String username, String password, GetUserResponseHandler handler) {
-        JsonObjectRequest request = new AuthRequest(Request.Method.GET, "https://mopsdev.bw.edu/~zpaul20/playpal/www/rest.php/users/", null, new Response.Listener<JSONObject>() {
+    public void getUserByAuth(Context context, String username, String password, GetUserResponseHandler handler) {
+        JsonObjectRequest jsonObjectRequest = new AuthRequest(Request.Method.GET, "https://mopsdev.bw.edu/~zpaul20/playpal/www/rest.php/users/", null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
                 Gson gson = new Gson();
@@ -57,7 +64,52 @@ public class UserModel {
         AuthRequest.username = username;
         AuthRequest.password = password;
         ServiceClient client = ServiceClient.sharedServiceClient(context);
-        client.addRequest(request);
+        client.addRequest(jsonObjectRequest);
+    }
+
+    public void getUserById(Context context, int userId, GetUserResponseHandler handler) {
+        JsonObjectRequest jsonObjectRequest = new AuthRequest(Request.Method.GET, "https://mopsdev.bw.edu/~zpaul20/playpal/www/rest.php/users/" + Integer.toString(userId), null, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                Gson gson = new Gson();
+                try {
+                    User user = gson.fromJson(response.get("data").toString(), User.class);
+                    handler.response(user);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                handler.error();
+            }
+        });
+        ServiceClient client = ServiceClient.sharedServiceClient(context);
+        client.addRequest(jsonObjectRequest);
+    }
+
+    public void getAllUsers(Context context, GetAllUsersResponseHandler handler) {
+        JsonObjectRequest jsonObjectRequest = new AuthRequest(Request.Method.GET, "https://mopsdev.bw.edu/~zpaul20/playpal/www/rest.php/users/-1", null, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                Gson gson = new Gson();
+                Type returnedUserList = new TypeToken<ArrayList<User>>() {}.getType();
+                try {
+                    List<User> userList = gson.fromJson(response.get("data").toString(), returnedUserList);
+                    handler.response(userList);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                handler.error();
+            }
+        });
+        ServiceClient client = ServiceClient.sharedServiceClient(context);
+        client.addRequest(jsonObjectRequest);
     }
 
     public void createUser(NewUserRequest newUserRequestObject, CreateUserResponseHandler handler) {

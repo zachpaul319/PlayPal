@@ -11,19 +11,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
-import android.widget.Toast;
 
-import com.android.volley.Request;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
-import com.example.playpalapp.model.AuthRequest;
 import com.example.playpalapp.model.User;
 import com.example.playpalapp.model.UserModel;
-import com.google.gson.Gson;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -89,7 +79,7 @@ public class LoginFragment extends Fragment {
                     String password = fields[1].getText().toString();
 
                     UserModel userModel = new UserModel();
-                    userModel.getUser(getContext(), username, password, new UserModel.GetUserResponseHandler() {
+                    userModel.getUserByAuth(getContext(), username, password, new UserModel.GetUserResponseHandler() {
                         @Override
                         public void response(User user) {
                             Bundle bundle = new Bundle();

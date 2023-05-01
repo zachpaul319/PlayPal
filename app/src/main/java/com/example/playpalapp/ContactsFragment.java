@@ -1,5 +1,7 @@
 package com.example.playpalapp;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -7,15 +9,21 @@ import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 
 import com.example.playpalapp.model.Contact;
+import com.example.playpalapp.model.ContactModel;
 import com.example.playpalapp.model.Message;
 import com.example.playpalapp.model.MessageModel;
+import com.example.playpalapp.model.User;
+import com.example.playpalapp.model.UserModel;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -26,6 +34,7 @@ import java.util.List;
 public class ContactsFragment extends Fragment implements ContactsAdapter.ContactsAdapterDelegate {
     RecyclerView recyclerView;
     List<Contact> contacts;
+    List<User> users;
     int userId;
     ContactsAdapter contactsAdapter;
 
@@ -86,6 +95,87 @@ public class ContactsFragment extends Fragment implements ContactsAdapter.Contac
         llm.setOrientation(RecyclerView.VERTICAL);
         recyclerView.setLayoutManager(llm);
 
+        view.findViewById(R.id.addContactButton).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                builder.setTitle("New Contact");
+                builder.setMessage("Please enter the ID of your new contact");
+
+                EditText idInputField = new EditText(getContext());
+                builder.setView(idInputField);
+
+                builder.setPositiveButton("Submit", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        String inputText = idInputField.getText().toString();
+                        if (TextUtils.isDigitsOnly(inputText)) {
+                            int id = Integer.parseInt(inputText);
+                            boolean validId = true;
+
+                            for (int c = 0; c < contacts.size(); c++) {
+                                if (id == contacts.get(c).userId || id == userId) {
+                                    validId = false;
+                                    break;
+                                }
+                            }
+
+                            if (validId) {
+                                UserModel userModel = new UserModel();
+                                userModel.getAllUsers(getContext(), new UserModel.GetAllUsersResponseHandler() {
+                                    @Override
+                                    public void response(List<User> userList) {
+                                        users = userList;
+                                        for (int u = 0; u < users.size(); u++) {
+                                            if (id == users.get(u).userId) {
+                                                userModel.getUserById(getContext(), id, new UserModel.GetUserResponseHandler() {
+                                                    @Override
+                                                    public void response(User user) {
+                                                        Bundle bundle = new Bundle();
+                                                        bundle.putInt("userId", userId);
+                                                        bundle.putInt("contactId", id);
+                                                        bundle.putString("contactName", user.username);
+                                                        bundle.putSerializable("messageList", new ArrayList<Message>());
+                                                        Navigation.findNavController(view).navigate(R.id.action_contactsFragment_to_messagesFragment, bundle);
+                                                    }
+
+                                                    @Override
+                                                    public void error() {
+                                                        Toaster.showToast(getContext(), "An error occurred");
+                                                    }
+                                                });
+
+                                                break;
+                                            } else if (u == users.size() - 1 && id != users.get(u).userId) {
+                                                Toaster.showToast(getContext(), "User does not exist");
+                                            }
+                                        }
+                                    }
+
+                                    public void error() {
+                                        Toaster.showToast(getContext(), "An error occurred");
+                                    }
+                                });
+
+                            } else {
+                                Toaster.showToast(getContext(), "Please enter a valid id");
+                            }
+                        } else {
+                            Toaster.showToast(getContext(), "Please enter an id");
+                        }
+                    }
+                });
+                builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.dismiss();
+                    }
+                });
+                AlertDialog alertDialog = builder.create();
+                alertDialog.show();
+            }
+        });
+
         return view;
     }
 
@@ -115,6 +205,47 @@ public class ContactsFragment extends Fragment implements ContactsAdapter.Contac
 
     @Override
     public void didHoldContact(int position) {
-        int x = 5;
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        builder.setTitle("Delete Contact");
+        builder.setMessage("Are you sure you want to delete this contact?");
+        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                int contactId = contacts.get(position).userId;
+
+                ContactModel contactModel = new ContactModel();
+                contactModel.deleteContact(userId, contactId, new ContactModel.DeleteContactResponseHandler() {
+                    @Override
+                    public void response() {
+                        removeContact(position);
+                        Toaster.showToast(getContext(), "Contact deleted");
+                    }
+
+                    @Override
+                    public void error() {
+                        Toaster.showToast(getContext(), "Could not delete contact");
+                    }
+                });
+            }
+        });
+        builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.dismiss();
+            }
+        });
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+    }
+
+    private void removeContact(int position) {
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                contacts.remove(position);
+                contactsAdapter.notifyDataSetChanged();
+                recyclerView.smoothScrollToPosition(contactsAdapter.getItemCount());
+            }
+        });
     }
 }
