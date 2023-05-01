@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="10dp"
+    android:layout_margin="10dp"
+    android:background="@drawable/rounded_corner">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/titleOutput"
+        android:textSize="20dp"
+        android:textColor="@color/black"
+        android:text="My Title"
+        />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/descriptionOutput"
+        android:layout_below="@id/titleOutput"
+        android:textColor="#656161"
+        android:text="My Description"
+        />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/timeOutput"
+        android:layout_below="@id/descriptionOutput"
+        android:textSize="12dp"
+        android:gravity="end"
+        android:textColor="#B1A9A9"
+        android:text="April 30 2023"
+        />
+
+</RelativeLayout>

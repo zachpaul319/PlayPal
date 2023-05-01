@@ -112,4 +112,9 @@ public class ContactsFragment extends Fragment implements ContactsAdapter.Contac
             }
         });
     }
+
+    @Override
+    public void didHoldContact(int position) {
+        int x = 5;
+    }
 }

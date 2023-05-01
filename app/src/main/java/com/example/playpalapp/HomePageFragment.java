@@ -13,12 +13,12 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.playpalapp.model.Contact;
-import com.example.playpalapp.model.Message;
-import com.example.playpalapp.model.MessageModel;
+import com.example.playpalapp.model.ContactModel;
+import com.example.playpalapp.model.Note;
+import com.example.playpalapp.model.NoteModel;
 import com.example.playpalapp.model.UserModel;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -132,6 +132,27 @@ public class HomePageFragment extends Fragment {
                 bundle.putString("username", username);
 
                 Navigation.findNavController(view).navigate(R.id.action_homePageFragment_to_editProductionsFragment, bundle);
+            }
+        });
+
+        view.findViewById(R.id.notesButton).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                NoteModel noteModel = new NoteModel();
+                noteModel.getNotes(getContext(), userId, new NoteModel.GetNotesResponseHandler() {
+                    @Override
+                    public void response(List<Note> notesList) {
+                        Bundle bundle = new Bundle();
+                        bundle.putInt("userId", userId);
+                        bundle.putSerializable("notesList", (Serializable) notesList);
+                        Navigation.findNavController(view).navigate(R.id.action_homePageFragment_to_notesFragment, bundle);
+                    }
+
+                    @Override
+                    public void error() {
+                        Toaster.showToast(getContext(), "An error occurred");
+                    }
+                });
             }
         });
 

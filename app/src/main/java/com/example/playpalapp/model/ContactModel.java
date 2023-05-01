@@ -1,4 +1,4 @@
-package com.example.playpalapp;
+package com.example.playpalapp.model;
 
 import android.content.Context;
 
@@ -6,6 +6,7 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.example.playpalapp.ServiceClient;
 import com.example.playpalapp.model.AuthRequest;
 import com.example.playpalapp.model.Contact;
 import com.google.gson.Gson;

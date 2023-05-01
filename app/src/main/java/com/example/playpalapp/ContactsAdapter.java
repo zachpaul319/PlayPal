@@ -19,6 +19,7 @@ import java.util.Random;
 public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.MyViewHolder> {
     public interface ContactsAdapterDelegate {
         void didSelectContact(int position, View view);
+        void didHoldContact(int position);
     }
 
     ContactsAdapterDelegate delegate;
@@ -49,6 +50,13 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.MyView
             if (delegate != null) {
                 delegate.didSelectContact(position, holder.itemView);
             }
+        });
+
+        holder.itemView.setOnLongClickListener(v -> {
+            if (delegate != null) {
+                delegate.didHoldContact(position);
+            }
+            return true;
         });
     }
 

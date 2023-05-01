@@ -3,7 +3,7 @@
     <string name="login_btn">Login</string>
     <string name="sign_up_btn">Sign Up</string>
     <string name="lets_go_btn">Let\'s Go!</string>
-    <string name="script_btn">Script</string>
+    <string name="notes_btn">Notes</string>
     <string name="messages_btn">Messages</string>
     <string name="past_productions">Past Productions:</string>
     <string name="delete_account_btn">Delete Account</string>
