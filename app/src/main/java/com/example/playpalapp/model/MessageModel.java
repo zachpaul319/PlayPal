@@ -56,7 +56,7 @@ public class MessageModel {
         client.addRequest(jsonObjectRequest);
     }
 
-    public void sendMessage(NewMessageRequest newMessageRequest, SendMessageResponseHandler handler) {
+    public void sendMessage(Context context, NewMessageRequest newMessageRequest, SendMessageResponseHandler handler) {
         Gson gson = new Gson();
         String json = gson.toJson(newMessageRequest);
 
@@ -84,11 +84,11 @@ public class MessageModel {
                 handler.error();
             }
         });
-        ServiceClient client = ServiceClient.sharedServiceClient(null);
+        ServiceClient client = ServiceClient.sharedServiceClient(context);
         client.addRequest(jsonObjectRequest);
     }
 
-    public void deleteMessage(int messageId, DeleteMessageResponseHandler handler) {
+    public void deleteMessage(Context context, int messageId, DeleteMessageResponseHandler handler) {
         JsonObjectRequest jsonObjectRequest = new AuthRequest(Request.Method.DELETE, "https://mopsdev.bw.edu/~zpaul20/playpal/www/rest.php/messages/" + Integer.toString(messageId), null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
@@ -100,7 +100,7 @@ public class MessageModel {
                 handler.error();
             }
         });
-        ServiceClient client = ServiceClient.sharedServiceClient(null);
+        ServiceClient client = ServiceClient.sharedServiceClient(context);
         client.addRequest(jsonObjectRequest);
     }
 }

@@ -112,7 +112,7 @@ public class UserModel {
         client.addRequest(jsonObjectRequest);
     }
 
-    public void createUser(NewUserRequest newUserRequestObject, CreateUserResponseHandler handler) {
+    public void createUser(Context context, NewUserRequest newUserRequestObject, CreateUserResponseHandler handler) {
         Gson gson = new Gson();
         String json = gson.toJson(newUserRequestObject);
 
@@ -141,11 +141,11 @@ public class UserModel {
                 handler.error();
             }
         });
-        ServiceClient client = ServiceClient.sharedServiceClient(null);
+        ServiceClient client = ServiceClient.sharedServiceClient(context);
         client.addRequest(jsonObjectRequest);
     }
 
-    public void updateUserProductions(int userId, UpdateUserProductionsRequest updateUserProductionsRequest, UpdateUserProductionsResponseHandler handler) {
+    public void updateUserProductions(Context context, int userId, UpdateUserProductionsRequest updateUserProductionsRequest, UpdateUserProductionsResponseHandler handler) {
         Gson gson = new Gson();
         String json = gson.toJson(updateUserProductionsRequest);
 
@@ -167,11 +167,11 @@ public class UserModel {
                 handler.error();
             }
         });
-        ServiceClient client = ServiceClient.sharedServiceClient(null);
+        ServiceClient client = ServiceClient.sharedServiceClient(context);
         client.addRequest(jsonObjectRequest);
     }
 
-    public void deleteUser(int userId, DeleteUserResponseHandler handler) {
+    public void deleteUser(Context context, int userId, DeleteUserResponseHandler handler) {
         JsonObjectRequest jsonObjectRequest = new AuthRequest(Request.Method.DELETE, "https://mopsdev.bw.edu/~zpaul20/playpal/www/rest.php/users/" + Integer.toString(userId), null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
@@ -183,7 +183,7 @@ public class UserModel {
                 handler.error();
             }
         });
-        ServiceClient client = ServiceClient.sharedServiceClient(null);
+        ServiceClient client = ServiceClient.sharedServiceClient(context);
         client.addRequest(jsonObjectRequest);
     }
 }

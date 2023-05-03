@@ -61,7 +61,7 @@ public class NoteModel {
         client.addRequest(jsonObjectRequest);
     }
 
-    public void addNewNote(NewNoteRequest newNoteRequest, AddNewNoteResponseHandler handler) {
+    public void addNewNote(Context context, NewNoteRequest newNoteRequest, AddNewNoteResponseHandler handler) {
         Gson gson = new Gson();
         String json = gson.toJson(newNoteRequest);
 
@@ -89,11 +89,11 @@ public class NoteModel {
                 handler.error();
             }
         });
-        ServiceClient client = ServiceClient.sharedServiceClient(null);
+        ServiceClient client = ServiceClient.sharedServiceClient(context);
         client.addRequest(jsonObjectRequest);
     }
 
-    public void updateNote(int noteId, UpdateNoteRequest updateNoteRequest, UpdateNoteResponseHandler handler) {
+    public void updateNote(Context context, int noteId, UpdateNoteRequest updateNoteRequest, UpdateNoteResponseHandler handler) {
         Gson gson = new Gson();
         String json = gson.toJson(updateNoteRequest);
 
@@ -115,11 +115,11 @@ public class NoteModel {
                 handler.error();
             }
         });
-        ServiceClient client = ServiceClient.sharedServiceClient(null);
+        ServiceClient client = ServiceClient.sharedServiceClient(context);
         client.addRequest(jsonObjectRequest);
     }
 
-    public void deleteNote(int noteId, DeleteNoteResponseHandler handler) {
+    public void deleteNote(Context context, int noteId, DeleteNoteResponseHandler handler) {
         JsonObjectRequest jsonObjectRequest = new AuthRequest(Request.Method.DELETE, "https://mopsdev.bw.edu/~zpaul20/playpal/www/rest.php/notes/" + Integer.toString(noteId), null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
@@ -131,7 +131,7 @@ public class NoteModel {
                 handler.error();
             }
         });
-        ServiceClient client = ServiceClient.sharedServiceClient(null);
+        ServiceClient client = ServiceClient.sharedServiceClient(context);
         client.addRequest(jsonObjectRequest);
     }
 }

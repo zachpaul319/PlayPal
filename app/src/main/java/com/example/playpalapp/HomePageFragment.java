@@ -99,7 +99,7 @@ public class HomePageFragment extends Fragment {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         UserModel userModel = new UserModel();
-                        userModel.deleteUser(userId, new UserModel.DeleteUserResponseHandler() {
+                        userModel.deleteUser(getContext(), userId, new UserModel.DeleteUserResponseHandler() {
                             @Override
                             public void response() {
                                 Navigation.findNavController(view).navigate(R.id.action_homePageFragment_to_loginFragment);

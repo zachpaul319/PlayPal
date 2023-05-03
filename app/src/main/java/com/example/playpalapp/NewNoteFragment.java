@@ -89,7 +89,7 @@ public class NewNoteFragment extends Fragment {
                 NewNoteRequest newNoteRequest = new NewNoteRequest(userId, title, content);
 
                 NoteModel noteModel = new NoteModel();
-                noteModel.addNewNote(newNoteRequest, new NoteModel.AddNewNoteResponseHandler() {
+                noteModel.addNewNote(getContext(), newNoteRequest, new NoteModel.AddNewNoteResponseHandler() {
                     @Override
                     public void response(int noteId) {
                         notes.add(0, new Note(noteId, userId, title, content));

@@ -108,7 +108,7 @@ public class MessagesFragment extends Fragment implements MessagesAdapter.Messag
                 if (!text.equals("")) {
                     NewMessageRequest newMessageRequest = new NewMessageRequest(userId, contactId, text);
                     MessageModel messageModel = new MessageModel();
-                    messageModel.sendMessage(newMessageRequest, new MessageModel.SendMessageResponseHandler() {
+                    messageModel.sendMessage(getContext(), newMessageRequest, new MessageModel.SendMessageResponseHandler() {
                         @Override
                         public void response(int messageId) {
                             addMessage(messageId, userId, contactId, text);
@@ -137,7 +137,7 @@ public class MessagesFragment extends Fragment implements MessagesAdapter.Messag
                 int messageId = messages.get(position).messageId;
 
                 MessageModel messageModel = new MessageModel();
-                messageModel.deleteMessage(messageId, new MessageModel.DeleteMessageResponseHandler() {
+                messageModel.deleteMessage(getContext(), messageId, new MessageModel.DeleteMessageResponseHandler() {
                     @Override
                     public void response() {
                         removeMessage(position);

@@ -214,7 +214,7 @@ public class ContactsFragment extends Fragment implements ContactsAdapter.Contac
                 int contactId = contacts.get(position).userId;
 
                 ContactModel contactModel = new ContactModel();
-                contactModel.deleteContact(userId, contactId, new ContactModel.DeleteContactResponseHandler() {
+                contactModel.deleteContact(getContext(), userId, contactId, new ContactModel.DeleteContactResponseHandler() {
                     @Override
                     public void response() {
                         removeContact(position);

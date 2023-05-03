@@ -123,7 +123,7 @@ public class NotesFragment extends Fragment implements NotesAdapter.NotesAdapter
                 int noteId = notes.get(position).noteId;
 
                 NoteModel noteModel = new NoteModel();
-                noteModel.deleteNote(noteId, new NoteModel.DeleteNoteResponseHandler() {
+                noteModel.deleteNote(getContext(), noteId, new NoteModel.DeleteNoteResponseHandler() {
                     @Override
                     public void response() {
                         removeNote(position);

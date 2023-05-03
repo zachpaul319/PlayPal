@@ -95,7 +95,7 @@ public class UpdateNoteFragment extends Fragment {
                 UpdateNoteRequest updateNoteRequest = new UpdateNoteRequest(title, content);
 
                 NoteModel noteModel = new NoteModel();
-                noteModel.updateNote(noteId, updateNoteRequest, new NoteModel.UpdateNoteResponseHandler() {
+                noteModel.updateNote(getContext(), noteId, updateNoteRequest, new NoteModel.UpdateNoteResponseHandler() {
                     @Override
                     public void response() {
                         Note updatedNote = notes.get(position);

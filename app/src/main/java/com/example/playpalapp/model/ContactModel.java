@@ -53,7 +53,7 @@ public class ContactModel {
         client.addRequest(jsonObjectRequest);
     }
 
-    public void deleteContact(int userId, int contactId, DeleteContactResponseHandler handler) {
+    public void deleteContact(Context context, int userId, int contactId, DeleteContactResponseHandler handler) {
         JsonObjectRequest jsonObjectRequest = new AuthRequest(Request.Method.DELETE, "https://mopsdev.bw.edu/~zpaul20/playpal/www/rest.php/contacts/" + Integer.toString(userId) + "/" + Integer.toString(contactId), null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
@@ -65,7 +65,7 @@ public class ContactModel {
                 handler.error();
             }
         });
-        ServiceClient client = ServiceClient.sharedServiceClient(null);
+        ServiceClient client = ServiceClient.sharedServiceClient(context);
         client.addRequest(jsonObjectRequest);
     }
 }

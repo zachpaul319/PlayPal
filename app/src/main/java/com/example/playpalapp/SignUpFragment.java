@@ -98,7 +98,7 @@ public class SignUpFragment extends Fragment {
                     NewUserRequest newUserRequestObject = new NewUserRequest(username, password, currentProduction, pastProductions.toString());
 
                     UserModel userModel = new UserModel();
-                    userModel.createUser(newUserRequestObject, new UserModel.CreateUserResponseHandler() {
+                    userModel.createUser(getContext(), newUserRequestObject, new UserModel.CreateUserResponseHandler() {
                         @Override
                         public void response(int status) {
                             if (status == 1) {

@@ -97,7 +97,7 @@ public class EditProductionsFragment extends Fragment {
                     UpdateUserProductionsRequest updateUserProductionsRequestObject = new UpdateUserProductionsRequest(currentProduction, pastProductions.toString());
 
                     UserModel userModel = new UserModel();
-                    userModel.updateUserProductions(userId, updateUserProductionsRequestObject, new UserModel.UpdateUserProductionsResponseHandler() {
+                    userModel.updateUserProductions(getContext(), userId, updateUserProductionsRequestObject, new UserModel.UpdateUserProductionsResponseHandler() {
                         @Override
                         public void response() {
                             Bundle bundle = new Bundle();
