@@ -28,14 +28,16 @@ import java.util.List;
  * create an instance of this fragment.
  */
 public class MessagesFragment extends Fragment implements MessagesAdapter.MessagesAdapterDelegate{
-    RecyclerView recyclerView;
+    static RecyclerView recyclerView;
+    static MessagesAdapter messagesAdapter;
+    static List<Message> messages;
+
+    MessageUpdateThread messageUpdateThread;
     EditText messageEditText;
     TextView nameMessageTop;
     ImageButton sendButton;
-    List<Message> messages;
     int userId, contactId;
     String contactName;
-    MessagesAdapter messagesAdapter;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -78,6 +80,12 @@ public class MessagesFragment extends Fragment implements MessagesAdapter.Messag
     }
 
     @Override
+    public void onStop() {
+        super.onStop();
+        messageUpdateThread.interrupt();
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
@@ -86,10 +94,15 @@ public class MessagesFragment extends Fragment implements MessagesAdapter.Messag
         contactId = getArguments().getInt("contactId");
         contactName = getArguments().getString("contactName");
         messages = (List<Message>) getArguments().getSerializable("messageList");
+        String lastText = messages.get(messages.size()-1).text;
+        String lastMessageTimeStamp = messages.get(messages.size()-1).timestamp;
 
         recyclerView = view.findViewById(R.id.messages_recycler_view);
         messageEditText = view.findViewById(R.id.message_edit_text);
         sendButton = view.findViewById(R.id.send_btn);
+
+        messageUpdateThread = new MessageUpdateThread(getContext(), getActivity(), userId, contactId, lastText, lastMessageTimeStamp);
+        messageUpdateThread.start();
 
         messagesAdapter = new MessagesAdapter(messages, userId);
         messagesAdapter.delegate = this;
@@ -123,6 +136,7 @@ public class MessagesFragment extends Fragment implements MessagesAdapter.Messag
                 }
             }
         });
+
         return view;
     }
 
@@ -165,7 +179,7 @@ public class MessagesFragment extends Fragment implements MessagesAdapter.Messag
         getActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                messages.add(new Message(messageId, senderId, recipientId, text));
+                messages.add(new Message(messageId, senderId, recipientId, text, null));
                 messagesAdapter.notifyDataSetChanged();
                 recyclerView.smoothScrollToPosition(messagesAdapter.getItemCount());
             }

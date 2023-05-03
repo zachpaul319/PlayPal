@@ -23,6 +23,11 @@ public class MessageModel {
         void error();
     }
 
+    public interface GetLatestMessageResponseHandler {
+        void response(Message message);
+        void error();
+    }
+
     public interface SendMessageResponseHandler {
         void response(int messageId);
         void error();
@@ -42,6 +47,28 @@ public class MessageModel {
                 try {
                     List<Message> messageList = gson.fromJson(response.get("data").toString(), returnedMessageList);
                     handler.response(messageList);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                handler.error();
+            }
+        });
+        ServiceClient client = ServiceClient.sharedServiceClient(context);
+        client.addRequest(jsonObjectRequest);
+    }
+
+    public void getLatestMessage(Context context, int userId, int contactId, GetLatestMessageResponseHandler handler) {
+        JsonObjectRequest jsonObjectRequest = new AuthRequest(Request.Method.GET, "https://mopsdev.bw.edu/~zpaul20/playpal/www/rest.php/messages/" + Integer.toString(userId) + "/" + Integer.toString(contactId) + "/-1", null, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                Gson gson = new Gson();
+                try {
+                    Message message = gson.fromJson(response.get("data").toString(), Message.class);
+                    handler.response(message);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
