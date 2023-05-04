@@ -1,4 +1,4 @@
-package com.example.playpalapp.model;
+package com.example.playpalapp.model.types;
 
 import android.os.Parcel;
 import android.os.Parcelable;

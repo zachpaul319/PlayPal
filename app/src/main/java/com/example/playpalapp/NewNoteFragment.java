@@ -1,5 +1,7 @@
 package com.example.playpalapp;
 
+import static com.example.playpalapp.tools.FieldChecker.*;
+
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -10,9 +12,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 
-import com.example.playpalapp.model.NewNoteRequest;
-import com.example.playpalapp.model.Note;
+import com.example.playpalapp.model.types.NewNoteRequest;
+import com.example.playpalapp.model.types.Note;
 import com.example.playpalapp.model.NoteModel;
+import com.example.playpalapp.tools.Toaster;
 
 import java.io.Serializable;
 import java.util.List;
@@ -27,6 +30,7 @@ public class NewNoteFragment extends Fragment {
     String title, content;
     List<Note> notes;
     EditText titleInputField, descriptionInputField;
+    EditText[] inputFields;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -76,34 +80,42 @@ public class NewNoteFragment extends Fragment {
         userId = getArguments().getInt("userId");
         notes = (List<Note>) getArguments().getSerializable("notesList");
 
+        inputFields = new EditText[2];
+
         titleInputField = view.findViewById(R.id.titleInputField);
         descriptionInputField = view.findViewById(R.id.descriptionInputField);
 
-
+        inputFields[0] = titleInputField;
+        inputFields[1] = descriptionInputField;
 
         view.findViewById(R.id.saveNoteButton).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                title = titleInputField.getText().toString();
-                content = descriptionInputField.getText().toString();
-                NewNoteRequest newNoteRequest = new NewNoteRequest(userId, title, content);
+                if (allFieldsFilledOut(inputFields)) {
+                    title = titleInputField.getText().toString();
+                    content = descriptionInputField.getText().toString();
+                    NewNoteRequest newNoteRequest = new NewNoteRequest(userId, title, content);
 
-                NoteModel noteModel = new NoteModel();
-                noteModel.addNewNote(getContext(), newNoteRequest, new NoteModel.AddNewNoteResponseHandler() {
-                    @Override
-                    public void response(int noteId) {
-                        notes.add(0, new Note(noteId, userId, title, content));
-                        Bundle bundle = new Bundle();
-                        bundle.putInt("userId", userId);
-                        bundle.putSerializable("notesList", (Serializable) notes);
-                        Navigation.findNavController(view).navigate(R.id.action_newNoteFragment_to_notesFragment, bundle);
-                    }
+                    NoteModel noteModel = new NoteModel();
+                    noteModel.addNewNote(getContext(), newNoteRequest, new NoteModel.AddNewNoteResponseHandler() {
+                        @Override
+                        public void response(int noteId) {
+                            notes.add(0, new Note(noteId, userId, title, content));
+                            Bundle bundle = new Bundle();
+                            bundle.putInt("userId", userId);
+                            bundle.putSerializable("notesList", (Serializable) notes);
+                            Navigation.findNavController(view).navigate(R.id.action_newNoteFragment_to_notesFragment, bundle);
+                        }
 
-                    @Override
-                    public void error() {
-                        Toaster.showToast(getContext(), "Could not add new note");
-                    }
-                });
+                        @Override
+                        public void error() {
+                            Toaster.showToast(getContext(), "Could not add new note");
+                        }
+                    });
+                } else {
+                    changeBorderColors(inputFields);
+                    showIncompleteFieldsToast(getContext());
+                }
             }
         });
 

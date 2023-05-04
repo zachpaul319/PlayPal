@@ -1,12 +1,10 @@
-package com.example.playpalapp;
+package com.example.playpalapp.tools;
 
 import android.content.Context;
 import android.graphics.Color;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 
 public class FieldChecker {
     private static boolean emptyField(@NonNull EditText field) {return field.getText().toString().equals("");}

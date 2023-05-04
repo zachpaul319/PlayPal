@@ -1,5 +1,7 @@
 package com.example.playpalapp;
 
+import static com.example.playpalapp.tools.FieldChecker.*;
+
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -10,9 +12,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 
-import com.example.playpalapp.model.Note;
+import com.example.playpalapp.model.types.Note;
 import com.example.playpalapp.model.NoteModel;
-import com.example.playpalapp.model.UpdateNoteRequest;
+import com.example.playpalapp.model.types.UpdateNoteRequest;
+import com.example.playpalapp.tools.Toaster;
 
 import java.io.Serializable;
 import java.util.List;
@@ -28,6 +31,7 @@ public class UpdateNoteFragment extends Fragment {
     Note note;
     List<Note> notes;
     EditText updateTitleInputField, updateDescriptionInputField;
+    EditText[] updateInputFields;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -79,43 +83,53 @@ public class UpdateNoteFragment extends Fragment {
         note = getArguments().getParcelable("note");
         notes = (List<Note>) getArguments().getSerializable("notesList");
 
+        updateInputFields = new EditText[2];
+
         updateTitleInputField = view.findViewById(R.id.updateTitleInputField);
         updateDescriptionInputField = view.findViewById(R.id.updateDescriptionInputField);
 
         updateTitleInputField.setText(note.title);
         updateDescriptionInputField.setText(note.content);
 
+        updateInputFields[0] = updateTitleInputField;
+        updateInputFields[1] = updateDescriptionInputField;
+
         view.findViewById(R.id.updateNoteSaveChangesButton).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                title = updateTitleInputField.getText().toString();
-                content = updateDescriptionInputField.getText().toString();
+                if (allFieldsFilledOut(updateInputFields)) {
+                    title = updateTitleInputField.getText().toString();
+                    content = updateDescriptionInputField.getText().toString();
 
-                int noteId = note.noteId;
-                UpdateNoteRequest updateNoteRequest = new UpdateNoteRequest(title, content);
+                    int noteId = note.noteId;
+                    UpdateNoteRequest updateNoteRequest = new UpdateNoteRequest(title, content);
 
-                NoteModel noteModel = new NoteModel();
-                noteModel.updateNote(getContext(), noteId, updateNoteRequest, new NoteModel.UpdateNoteResponseHandler() {
-                    @Override
-                    public void response() {
-                        Note updatedNote = notes.get(position);
-                        notes.remove(position);
+                    NoteModel noteModel = new NoteModel();
+                    noteModel.updateNote(getContext(), noteId, updateNoteRequest, new NoteModel.UpdateNoteResponseHandler() {
+                        @Override
+                        public void response() {
+                            Note updatedNote = notes.get(position);
+                            notes.remove(position);
 
-                        updatedNote.title = title;
-                        updatedNote.content = content;
-                        notes.add(0, updatedNote);
+                            updatedNote.title = title;
+                            updatedNote.content = content;
+                            notes.add(0, updatedNote);
 
-                        Bundle bundle = new Bundle();
-                        bundle.putInt("userId", userId);
-                        bundle.putSerializable("notesList", (Serializable) notes);
-                        Navigation.findNavController(view).navigate(R.id.action_updateNoteFragment_to_notesFragment, bundle);
-                    }
+                            Bundle bundle = new Bundle();
+                            bundle.putInt("userId", userId);
+                            bundle.putSerializable("notesList", (Serializable) notes);
+                            Navigation.findNavController(view).navigate(R.id.action_updateNoteFragment_to_notesFragment, bundle);
+                        }
 
-                    @Override
-                    public void error() {
-                        Toaster.showToast(getContext(), "Could not update note");
-                    }
-                });
+                        @Override
+                        public void error() {
+                            Toaster.showToast(getContext(), "Could not update note");
+                        }
+                    });
+                } else {
+                    changeBorderColors(updateInputFields);
+                    showIncompleteFieldsToast(getContext());
+                }
             }
         });
 

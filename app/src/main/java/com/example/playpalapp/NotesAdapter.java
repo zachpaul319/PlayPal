@@ -8,7 +8,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.playpalapp.model.Note;
+import com.example.playpalapp.model.types.Note;
 
 import java.util.List;
 
@@ -61,13 +61,12 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.MyViewHolder
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
-        TextView titleOutput, descriptionOutput, timeOutput;
+        TextView titleOutput, descriptionOutput;
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
             titleOutput = itemView.findViewById(R.id.titleOutput);
             descriptionOutput = itemView.findViewById(R.id.descriptionOutput);
-            timeOutput = itemView.findViewById(R.id.timeOutput);
         }
 
         private void setData(String title, String content) {

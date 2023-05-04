@@ -1,4 +1,4 @@
-package com.example.playpalapp.model;
+package com.example.playpalapp.model.types;
 
 import com.example.playpalapp.NewNoteFragment;
 

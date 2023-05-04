@@ -10,8 +10,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.playpalapp.model.Contact;
-import com.example.playpalapp.model.User;
+import com.example.playpalapp.model.types.Contact;
 
 import java.util.List;
 import java.util.Random;

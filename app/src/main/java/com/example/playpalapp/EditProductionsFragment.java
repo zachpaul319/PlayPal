@@ -1,6 +1,6 @@
 package com.example.playpalapp;
 
-import static com.example.playpalapp.FieldChecker.*;
+import static com.example.playpalapp.tools.FieldChecker.*;
 
 import android.os.Bundle;
 
@@ -12,8 +12,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 
-import com.example.playpalapp.model.UpdateUserProductionsRequest;
+import com.example.playpalapp.model.types.UpdateUserProductionsRequest;
 import com.example.playpalapp.model.UserModel;
+import com.example.playpalapp.tools.Toaster;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -21,6 +22,11 @@ import com.example.playpalapp.model.UserModel;
  * create an instance of this fragment.
  */
 public class EditProductionsFragment extends Fragment {
+    EditText[] currentProductionEditField, pastProductionEditFields;
+    int userId;
+    String username, currentProduction;
+    String[] pastProductionsArray;
+
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -66,8 +72,8 @@ public class EditProductionsFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_edit_productions, container, false);
-        EditText[] currentProductionEditField = new EditText[1];
-        EditText[] pastProductionEditFields = new EditText[3];
+        currentProductionEditField = new EditText[1];
+        pastProductionEditFields = new EditText[3];
 
         currentProductionEditField[0] = view.findViewById(R.id.currentProductionEditField);
         
@@ -75,8 +81,16 @@ public class EditProductionsFragment extends Fragment {
         pastProductionEditFields[1] = view.findViewById(R.id.pastProductionsEditField2);
         pastProductionEditFields[2] = view.findViewById(R.id.pastProductionsEditField3);
         
-        int userId = getArguments().getInt("userId");
-        String username = getArguments().getString("username");
+        userId = getArguments().getInt("userId");
+        username = getArguments().getString("username");
+        currentProduction = getArguments().getString("currentProduction");
+        pastProductionsArray = getArguments().getStringArray("pastProductionsArray");
+
+        currentProductionEditField[0].setText(currentProduction);
+
+        for (int i = 0; i < pastProductionsArray.length; i++) {
+            pastProductionEditFields[i].setText(pastProductionsArray[i]);
+        }
         
         view.findViewById(R.id.saveChangesButton).setOnClickListener(new View.OnClickListener() {
             @Override

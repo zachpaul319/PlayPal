@@ -1,4 +1,4 @@
-package com.example.playpalapp;
+package com.example.playpalapp.tools;
 
 import android.content.Context;
 import android.widget.Toast;

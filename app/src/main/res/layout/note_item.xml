@@ -24,15 +24,4 @@
         android:text="My Description"
         />
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/timeOutput"
-        android:layout_below="@id/descriptionOutput"
-        android:textSize="12dp"
-        android:gravity="end"
-        android:textColor="#B1A9A9"
-        android:text="April 30 2023"
-        />
-
 </RelativeLayout>

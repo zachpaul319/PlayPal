@@ -15,12 +15,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 
-import com.example.playpalapp.model.Contact;
+import com.example.playpalapp.model.types.Contact;
 import com.example.playpalapp.model.ContactModel;
-import com.example.playpalapp.model.Message;
+import com.example.playpalapp.model.types.Message;
 import com.example.playpalapp.model.MessageModel;
-import com.example.playpalapp.model.User;
+import com.example.playpalapp.model.types.User;
 import com.example.playpalapp.model.UserModel;
+import com.example.playpalapp.tools.Toaster;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -32,11 +33,12 @@ import java.util.List;
  * create an instance of this fragment.
  */
 public class ContactsFragment extends Fragment implements ContactsAdapter.ContactsAdapterDelegate {
-    RecyclerView recyclerView;
-    List<Contact> contacts;
+    static RecyclerView recyclerView;
+    static List<Contact> contacts;
+    static ContactsAdapter contactsAdapter;
+
     List<User> users;
     int userId;
-    ContactsAdapter contactsAdapter;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -134,8 +136,10 @@ public class ContactsFragment extends Fragment implements ContactsAdapter.Contac
                                                         Bundle bundle = new Bundle();
                                                         bundle.putInt("userId", userId);
                                                         bundle.putInt("contactId", id);
+                                                        bundle.putInt("contactPosition", contacts.size());
                                                         bundle.putString("contactName", user.username);
                                                         bundle.putSerializable("messageList", new ArrayList<Message>());
+                                                        bundle.putBoolean("isFirstMessage", true);
                                                         Navigation.findNavController(view).navigate(R.id.action_contactsFragment_to_messagesFragment, bundle);
                                                     }
 
@@ -191,6 +195,7 @@ public class ContactsFragment extends Fragment implements ContactsAdapter.Contac
                 Bundle bundle = new Bundle();
                 bundle.putInt("userId", userId);
                 bundle.putInt("contactId", contactId);
+                bundle.putInt("contactPosition", position);
                 bundle.putString("contactName", contactName);
                 bundle.putSerializable("messageList", (Serializable) messageList);
                 Navigation.findNavController(view).navigate(R.id.action_contactsFragment_to_messagesFragment, bundle);

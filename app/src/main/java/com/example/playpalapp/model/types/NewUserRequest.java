@@ -1,11 +1,9 @@
-package com.example.playpalapp.model;
+package com.example.playpalapp.model.types;
 
-public class User {
-    public int userId;
+public class NewUserRequest {
     public String username, password, currentProduction, pastProductions;
 
-    public User(int userId, String username, String password, String currentProduction, String pastProductions) {
-        this.userId = userId;
+    public NewUserRequest(String username, String password, String currentProduction, String pastProductions) {
         this.username = username;
         this.password = password;
         this.currentProduction = currentProduction;

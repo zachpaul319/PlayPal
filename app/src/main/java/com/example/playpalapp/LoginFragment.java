@@ -1,6 +1,6 @@
 package com.example.playpalapp;
 
-import static com.example.playpalapp.FieldChecker.*;
+import static com.example.playpalapp.tools.FieldChecker.*;
 
 import android.os.Bundle;
 
@@ -12,8 +12,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 
-import com.example.playpalapp.model.User;
+import com.example.playpalapp.model.types.User;
 import com.example.playpalapp.model.UserModel;
+import com.example.playpalapp.tools.Toaster;
 
 /**
  * A simple {@link Fragment} subclass.

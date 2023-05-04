@@ -13,8 +13,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.playpalapp.model.Note;
+import com.example.playpalapp.model.types.Note;
 import com.example.playpalapp.model.NoteModel;
+import com.example.playpalapp.tools.Toaster;
 
 import java.io.Serializable;
 import java.util.List;

@@ -1,4 +1,4 @@
-package com.example.playpalapp.model;
+package com.example.playpalapp.model.types;
 
 public class Message {
     public int messageId, senderId, recipientId;

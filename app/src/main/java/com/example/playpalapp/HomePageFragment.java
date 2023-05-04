@@ -12,11 +12,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.example.playpalapp.model.Contact;
+import com.example.playpalapp.model.types.Contact;
 import com.example.playpalapp.model.ContactModel;
-import com.example.playpalapp.model.Note;
+import com.example.playpalapp.model.types.Note;
 import com.example.playpalapp.model.NoteModel;
 import com.example.playpalapp.model.UserModel;
+import com.example.playpalapp.tools.Toaster;
 
 import java.io.Serializable;
 import java.util.List;
@@ -27,6 +28,10 @@ import java.util.List;
  * create an instance of this fragment.
  */
 public class HomePageFragment extends Fragment {
+    int userId;
+    String username, currentProduction, pastProductions;
+    String[] pastProductionsArray;
+    TextView welcomeNameView, currentProductionView, pastProductionsView;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -74,20 +79,20 @@ public class HomePageFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_home_page, container, false);
 
-        int userId = getArguments().getInt("userId");
-        String username = getArguments().getString("username");
+        userId = getArguments().getInt("userId");
+        username = getArguments().getString("username");
 
-        String welcomeName = "Welcome\n" + username;
-        TextView welcomeNameView = view.findViewById(R.id.welcomeNameView);
-        welcomeNameView.setText(welcomeName);
+        welcomeNameView = view.findViewById(R.id.welcomeNameView);
+        welcomeNameView.setText("Welcome\n" + username);
 
-        String currentProduction = "Current Production:\n" + getArguments().getString("currentProduction");
-        TextView currentProductionView = view.findViewById(R.id.currentProductionView);
-        currentProductionView.setText(currentProduction);
+        currentProduction = getArguments().getString("currentProduction");
+        currentProductionView = view.findViewById(R.id.currentProductionView);
+        currentProductionView.setText("Current Production:\n" + currentProduction);
 
-        String pastProductions = getArguments().getString("pastProductions").replaceAll(", ", "\n");
-        TextView pastProductionsView = view.findViewById(R.id.pastProductionsView);
-        pastProductionsView.setText(pastProductions);
+        pastProductions = getArguments().getString("pastProductions");
+        pastProductionsArray = pastProductions.split(", ");
+        pastProductionsView = view.findViewById(R.id.pastProductionsView);
+        pastProductionsView.setText(pastProductions.replaceAll(", ", "\n"));
 
         view.findViewById(R.id.deleteAccountButton).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -130,7 +135,8 @@ public class HomePageFragment extends Fragment {
                 Bundle bundle = new Bundle();
                 bundle.putInt("userId", userId);
                 bundle.putString("username", username);
-
+                bundle.putString("currentProduction", currentProduction);
+                bundle.putStringArray("pastProductionsArray", pastProductionsArray);
                 Navigation.findNavController(view).navigate(R.id.action_homePageFragment_to_editProductionsFragment, bundle);
             }
         });

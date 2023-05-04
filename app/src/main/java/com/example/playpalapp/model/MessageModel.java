@@ -7,6 +7,9 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.example.playpalapp.ServiceClient;
+import com.example.playpalapp.model.types.AuthRequest;
+import com.example.playpalapp.model.types.Message;
+import com.example.playpalapp.model.types.NewMessageRequest;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 

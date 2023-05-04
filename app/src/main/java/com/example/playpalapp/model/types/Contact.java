@@ -1,4 +1,4 @@
-package com.example.playpalapp.model;
+package com.example.playpalapp.model.types;
 
 public class Contact {
     public int userId;

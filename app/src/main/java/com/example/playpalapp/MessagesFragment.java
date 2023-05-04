@@ -1,5 +1,8 @@
 package com.example.playpalapp;
 
+import static com.example.playpalapp.ContactsFragment.contacts;
+import static com.example.playpalapp.ContactsFragment.contactsAdapter;
+
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
@@ -15,11 +18,12 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
-import com.example.playpalapp.model.Message;
+import com.example.playpalapp.model.types.Contact;
+import com.example.playpalapp.model.types.Message;
 import com.example.playpalapp.model.MessageModel;
-import com.example.playpalapp.model.NewMessageRequest;
+import com.example.playpalapp.model.types.NewMessageRequest;
+import com.example.playpalapp.tools.Toaster;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -36,8 +40,9 @@ public class MessagesFragment extends Fragment implements MessagesAdapter.Messag
     EditText messageEditText;
     TextView nameMessageTop;
     ImageButton sendButton;
-    int userId, contactId;
-    String contactName;
+    int userId, contactId, contactPosition;
+    String contactName, lastText, lastMessageTimeStamp;;
+    boolean isFirstMessage = false;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -94,14 +99,30 @@ public class MessagesFragment extends Fragment implements MessagesAdapter.Messag
         contactId = getArguments().getInt("contactId");
         contactName = getArguments().getString("contactName");
         messages = (List<Message>) getArguments().getSerializable("messageList");
-        String lastText = messages.get(messages.size()-1).text;
-        String lastMessageTimeStamp = messages.get(messages.size()-1).timestamp;
+
+        if (messages.size() > 0) {
+            lastText = messages.get(messages.size() - 1).text;
+            lastMessageTimeStamp = messages.get(messages.size() - 1).timestamp;
+        } else {
+            lastText = "";
+            lastMessageTimeStamp = "";
+        }
+
+        if (getArguments().containsKey("isFirstMessage")) {
+            isFirstMessage = true;
+        }
+
+        if (getArguments().containsKey("contactPosition")) {
+            contactPosition = getArguments().getInt("contactPosition");
+        } else {
+            contactPosition = 0;
+        }
 
         recyclerView = view.findViewById(R.id.messages_recycler_view);
         messageEditText = view.findViewById(R.id.message_edit_text);
         sendButton = view.findViewById(R.id.send_btn);
 
-        messageUpdateThread = new MessageUpdateThread(getContext(), getActivity(), userId, contactId, lastText, lastMessageTimeStamp);
+        messageUpdateThread = new MessageUpdateThread(getContext(), getActivity(), userId, contactId, contactPosition, lastText, lastMessageTimeStamp);
         messageUpdateThread.start();
 
         messagesAdapter = new MessagesAdapter(messages, userId);
@@ -125,6 +146,15 @@ public class MessagesFragment extends Fragment implements MessagesAdapter.Messag
                         @Override
                         public void response(int messageId) {
                             addMessage(messageId, userId, contactId, text);
+
+                            if (isFirstMessage) {
+                                addContact(contactId, contactName, text);
+
+                                isFirstMessage = false;
+                            }
+
+                            editContact(text, contactPosition, 0);
+
                             messageEditText.setText("");
                         }
 
@@ -155,6 +185,7 @@ public class MessagesFragment extends Fragment implements MessagesAdapter.Messag
                     @Override
                     public void response() {
                         removeMessage(position);
+                        editContact(messages.get(messages.size()-1).text, contactPosition, contactPosition);
                         Toaster.showToast(getContext(), "Message deleted");
                     }
 
@@ -195,5 +226,19 @@ public class MessagesFragment extends Fragment implements MessagesAdapter.Messag
                 recyclerView.smoothScrollToPosition(messagesAdapter.getItemCount());
             }
         });
+    }
+
+    private void addContact(int contactId, String contactName, String text) {
+        contacts.add(0, new Contact(contactId, contactName, text));
+        contactsAdapter.notifyDataSetChanged();
+    }
+
+    private void editContact(String lastMessage, int currentPosition, int newPosition) {
+        Contact editedContact = contacts.get(currentPosition);
+        contacts.remove(currentPosition);
+
+        editedContact.text = lastMessage;
+        contacts.add(newPosition, editedContact);
+        contactsAdapter.notifyDataSetChanged();
     }
 }
