@@ -136,7 +136,6 @@ public class ContactsFragment extends Fragment implements ContactsAdapter.Contac
                                                         Bundle bundle = new Bundle();
                                                         bundle.putInt("userId", userId);
                                                         bundle.putInt("contactId", id);
-                                                        bundle.putInt("contactPosition", contacts.size());
                                                         bundle.putString("contactName", user.username);
                                                         bundle.putSerializable("messageList", new ArrayList<Message>());
                                                         bundle.putBoolean("isFirstMessage", true);

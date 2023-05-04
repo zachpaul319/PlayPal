@@ -31,7 +31,7 @@ public class HomePageFragment extends Fragment {
     int userId;
     String username, currentProduction, pastProductions;
     String[] pastProductionsArray;
-    TextView welcomeNameView, currentProductionView, pastProductionsView;
+    TextView welcomeNameView, currentProductionView, pastProductionsView, userIdView;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -93,6 +93,9 @@ public class HomePageFragment extends Fragment {
         pastProductionsArray = pastProductions.split(", ");
         pastProductionsView = view.findViewById(R.id.pastProductionsView);
         pastProductionsView.setText(pastProductions.replaceAll(", ", "\n"));
+
+        userIdView = view.findViewById(R.id.userIdView);
+        userIdView.setText("User ID: " + userId);
 
         view.findViewById(R.id.deleteAccountButton).setOnClickListener(new View.OnClickListener() {
             @Override
